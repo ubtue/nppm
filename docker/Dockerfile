@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # install dependencies
 RUN apt-get --yes update
-RUN apt-get --yes install mysql-server openjdk-17-jre tomcat10
+RUN apt-get --yes install mysql-server openjdk-21-jre tomcat10
 
 # MySQL configuration
 RUN echo "collation-server = utf8_unicode_ci" >> /etc/mysql/mysql.conf.d/mysqld.cnf

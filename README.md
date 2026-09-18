@@ -34,7 +34,7 @@ Prerequisites:
 </Context>
 ```
 
-- JDK >= 17
+- JDK >= 21
 - MySQL >= 8.0
   - innodb_buffer_pool_size=1024M
   - collation-server = utf8_unicode_ci
