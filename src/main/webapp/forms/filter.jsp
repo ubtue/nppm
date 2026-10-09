@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
+<%@page import="java.util.Locale"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 
@@ -23,15 +25,30 @@
 
     if (!title.contains("gast_")) {
         List<DatenbankFilter> filters = DatenbankDB.getListFilter();
-        out.println("<select name=\"filter\">");
+        out.println("<select class=\"ut-form__select ut-form__field \" name=\"filter\" id=\"id_field\">");
         for (DatenbankFilter datenbankFilter : filters) {
             if (datenbankFilter.getFormular().equals(title)) {
-                out.println("<option value=\"" + datenbankFilter.getNummer() + "\"" + (datenbankFilter.getNummer() == filter ? " selected" : "") + ">" + DBtoHTML(datenbankFilter.getBezeichnung()) + "</option>");
+
+                String bezeichnung = "";
+                String language =  Language.getLanguage(request);
+                if(language.equals("de")){
+                    bezeichnung = datenbankFilter.getBezeichnung();
+                }else if(language.equals("gb")){
+                    bezeichnung = datenbankFilter.getGb();
+                }else if(language.equals("fr")){
+                    bezeichnung = datenbankFilter.getFr();
+                }else if(language.equals("la")){
+                    bezeichnung = datenbankFilter.getLa();
+                }
+
+                out.println("<option label=\"" + DBtoHTML(bezeichnung) + "\"value=\"" + datenbankFilter.getNummer() + "\"" + (datenbankFilter.getNummer() == filter ? " selected" : "") + ">" + DBtoHTML(datenbankFilter.getBezeichnung()) + "</option>");
             }
         }
         out.println("</select>");
-        out.println("<input type=\"text\" name=\"filterParameter\" value=\"" + (filterParameter == null ? "" : filterParameter) + "\" size=\"10\" maxlength=\"50\">");
-        out.println("<input type=\"submit\" value=\"filtern\">");
-    }
+        out.println("<input class=\"ut-form__input ut-form__field\" type=\"text\" name=\"filterParameter\" value=\"" + (filterParameter == null ? "" : filterParameter) + "\" size=\"10\" maxlength=\"50\">");
 
+        %>
+        <input class="ut-form__input" type="submit" value="<% Language.printTextfield(out, session, "navigation", "Filter");%>">
+        <%
+    }
 %>

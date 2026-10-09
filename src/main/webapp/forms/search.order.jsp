@@ -34,4 +34,4 @@
     <jsp:param name="Formular" value="freie_suche"/>
     <jsp:param name="Textfeld" value="SortierungDESC"/>
 </jsp:include>
-<br>Zeitraum (nur für Datierung): <input type="text" name="<%= zeitraum%>" />
+<br><% Language.printTextfield(out, session, "gast_freie_suche", "ZeitraumDatierung");%> <input type="text" name="<%= zeitraum%>" />

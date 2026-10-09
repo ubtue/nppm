@@ -8,15 +8,13 @@ import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.hibernate.Criteria;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
 public class SaveHelper extends AbstractBase {
 
     public static boolean existForm(String form, int id) throws Exception {
-        return DatenbankDB.getSingleResult("SELECT * FROM " + form + " WHERE ID=" + id) != null;
+        return getSingleResult("SELECT * FROM " + form + " WHERE ID=" + id) != null;
     }
 
     public static void insertMetaData(String form, int id, int benutzerID, int gruppenID) throws Exception {
@@ -57,24 +55,18 @@ public class SaveHelper extends AbstractBase {
 
     public static List<Map> getAttributeMap(String table, String attributeString, int id) throws Exception {
         List<Map> results = new ArrayList<>();
+        String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
+        List<Object[]> queryResults = getListNative(sql); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
+        for (Object[] row : queryResults) {
+            Map<String, Object> rowMap = new HashMap<>();
 
-        try ( Session session = getSession()) {
-
-            String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
-
-            List<Object[]> queryResults = AbstractBase.getListNative(sql); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
-
-            for (Object[] row : queryResults) {
-                Map<String, Object> rowMap = new HashMap<>();
-
-                // Die Spaltenwerte in die Map einfügen, wobei die Spaltennamen als Schlüssel verwendet werden
-                for (int i = 0; i < row.length; i++) {
-                    String columnName = attributeString.split(",")[i].trim(); // Die Spaltennamen sind mit Kommas getrennt
-                    rowMap.put(columnName, row[i]);
-                }
-
-                results.add(rowMap);
+            // Die Spaltenwerte in die Map einfügen, wobei die Spaltennamen als Schlüssel verwendet werden
+            for (int i = 0; i < row.length; i++) {
+                String columnName = attributeString.split(",")[i].trim(); // Die Spaltennamen sind mit Kommas getrennt
+                rowMap.put(columnName, row[i]);
             }
+
+            results.add(rowMap);
         }
         return results;
     }
@@ -82,7 +74,7 @@ public class SaveHelper extends AbstractBase {
     public static List<Map> getMapField(String zieltabelle, int id) throws Exception {
         String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
-        return AbstractBase.getMappedListString(sql);
+        return getMappedListString(sql);
     }
 
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
@@ -143,9 +135,9 @@ public class SaveHelper extends AbstractBase {
             CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
             Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
             criteria.select(root).where(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("formular"), formular)
-                    )
+                criteriaBuilder.and(
+                    criteriaBuilder.equal(root.get("formular"), formular)
+                )
             );
             org.hibernate.query.Query query = session.createQuery(criteria);
             List<DatenbankMapping> rows = query.getResultList();

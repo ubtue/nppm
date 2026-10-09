@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="java.sql.Date" isThreadSafe="false"%>
@@ -6,52 +8,60 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<%    String id = request.getParameter("ID");
+<%
+    boolean isGast = Utils.isGastEnvironment(request);
+    String id = request.getParameter("ID");
     String formular = request.getParameter("Formular");
     String modul = request.getParameter("Modul");
 
     if (formular.equals("einzelbeleg")) {
         //Gast: Einzelbeleg Katagorie/Bereich Textkritik (Edition, Sigle, Varianten, Datierung d. Textzeugen, Bemerkung)
         if (modul.equals("lesartenRO")) {
-
-            out.println("<table class=\"content-table\" width=\"100%\">\n");
 %>
-<tr>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Edition" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Sigle" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Varianten" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="DatierungTextzeuge" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Bemerkung" />
-        </jsp:include></th>
-</tr>
-
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+<thead class="ut-table__header ">
+    <tr class="ut-table__row">
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einzelbeleg" />
+                <jsp:param name="Textfeld" value="Edition" />
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einzelbeleg" />
+                <jsp:param name="Textfeld" value="Sigle" />
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einzelbeleg" />
+                <jsp:param name="Textfeld" value="Varianten" />
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einzelbeleg" />
+                <jsp:param name="Textfeld" value="DatierungTextzeuge" />
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einzelbeleg" />
+                <jsp:param name="Textfeld" value="Bemerkung" />
+            </jsp:include>
+        </th>
+    </tr>
+</thead>
+<tbody class="ut-table__body ">
 <%
             try {
 
                 List<Object[]> resultList = ModulIncDB.getListEinzelbelegTextkritik(id);
 
-                int count = 0;
                 for (Object[] row : resultList) {
-                    count++;
-                    if (count % 2 == 0) {
-                        out.println("<tr>");
-                    } else {
-                        out.println("<tr bgcolor='#AACCDD'>");
-                    }
+
+                    out.println("<tr class=\"ut-table__row\">");
 
                     String zitierweise = row[0] != null ? String.valueOf(row[0]) : "";
                     String sigle = row[1] != null ? String.valueOf(row[1]) : "";
@@ -69,9 +79,9 @@
 
                     String bemerkung = row[11] != null ? String.valueOf(row[11]) : "";
 
-                    out.println("<td>" + zitierweise + "</td>");
-                    out.println("<td>" + sigle + "</td>");
-                    out.println("<td>" + variante + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + zitierweise + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + sigle + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + variante + "</td>");
 
                     String von = "";
 
@@ -124,14 +134,13 @@
                     }
 
                     if (!bis.equals(von) && !bis.equals("")) {
-                        out.println("<td>" + von + " - " + bis + "</td>");
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis + "</td>");
                     } else {
-                        out.println("<td>" + von + "</td>");
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
                     }
 
-                    out.println("<td>" + bemerkung + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + bemerkung + "</td>");
                     out.println("</tr>");
-
                 }
 
             } catch (Exception e) {
@@ -139,22 +148,24 @@
             } finally {
 
             }
+            out.println("</tbody>");
             out.println("</table>\n");
         }
     }
 
-    if (formular.equals("person")) {
-        //Backend: Personen, Feld Namen z.b Gudalandaz (zweite Zeile) Gōdalandaz
+    if (formular.equals("person")) { //Table wid in person.jsp erstellt
+        //Backend: Personen, Feld Namen z.b Gudalandaz (zweite Zeile) G?dalandaz
         if (modul.equals("namen")) {
             out.println("<tr><td>\n");
 
             try {
                 // Abfrage der Anzahl der Kommentare
                 int count = ModulIncDB.countNamenkommentar(id);
-
-                out.print("<label>Name");
+                out.print("<label>");
                 if (count > 1) {
-                    out.println("n");
+                    out.print(Language.getTextfield(session, "modul", "Namen"));
+                }else{
+                    out.print(Language.getTextfield(session, "modul", "Name"));
                 }
                 out.println("</label></td><td>");
 
@@ -168,7 +179,10 @@
                         String plemmaID = String.valueOf(row[1]);
 
                         if (plemma != null && !plemma.isEmpty() && !plemma.equalsIgnoreCase("null")) {
-                            out.println("<a href=\"namenkommentar?ID=" + plemmaID + "\">" + format(plemma, "PLemma") + "<br>");
+                            if (isGast)
+                                out.println("<a href=\"" + Utils.getPidUrl(request, "N" + plemmaID) + "\">" + format(plemma, "PLemma") + "<br>");
+                            else
+                                out.println("<a href=\"namenkommentar?ID=" + plemmaID + "\">" + format(plemma, "PLemma") + "<br>");
                         }
                     }
                 }
@@ -183,54 +197,69 @@
 
         //Gast: Personen, Katagorie/Bereich: Einzelbeleg (Beleg, Belegform, Datierung, Amt/Weihe, Stand, Kontext)
         if (modul.equals("nachweiseRO")) {
-            out.println("<table \"width=100%\" id=\"einzelbelege\" class=\"content-table\">\n");
 %>
-<tr>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="Beleg" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="Belegform" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="Datierung" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="AmtWeihe" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="Stand" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="person" />
-            <jsp:param name="Textfeld" value="Kontext" />
-        </jsp:include></th>
-</tr>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <thead class="ut-table__header ">
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="Beleg" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="Belegform" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="Datierung" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="AmtWeihe" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="Stand" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="person" />
+                    <jsp:param name="Textfeld" value="Kontext" />
+                </jsp:include>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="ut-table__body">
 <%
     try {
 
         List<Object[]> resultList = ModulIncDB.getListPersonenEinzelbelege(id);
 
-        int count = 0;
+
 
         for (Object[] row : resultList) {
-            count++;
-            if (count % 2 == 0) {
-                out.println("<tr>");
-            } else {
-                out.println("<tr bgcolor='#AACCDD'>");
-            }
+
+            out.println("<tr class=\"ut-table__row\">");
 
             String eId = String.valueOf(row[0]);
             String belegform = row[2] != null ? String.valueOf(row[2]) : "";
 
-            out.println("<td><a href=\"einzelbeleg?ID="
-                    + eId + "\">");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">");
+
+            if (isGast)
+                out.println("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "B" + eId) + "\">");
+            else
+                out.println("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + eId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="person" />
@@ -238,7 +267,7 @@
 </jsp:include>
 <%
                 out.println("</a></td>");
-                out.println("<td>" + getBelegformExternalLinked(eId, belegform) + "</td>");
+                out.println("<td class=\"ut-table__item ut-table__body__item\">" + getBelegformExternalLinked(eId, belegform) + "</td>");
 
                 String vonTag = row[3] != null ? String.valueOf(row[3]) : "";
                 String vonMonat = row[4] != null ? String.valueOf(row[4]) : "";
@@ -249,9 +278,7 @@
                 String bisJahr = row[9] != null ? String.valueOf(row[9]) : "";
                 String bisJhdt = row[10] != null ? String.valueOf(row[10]) : "";
 
-                String sewBezeichnung = row[11] != null ? String.valueOf(row[11]) : "";
-                String ssBezeichnung = row[12] != null ? String.valueOf(row[12]) : "";
-                String kontext = row[13] != null ? String.valueOf(row[13]) : "";
+                String kontext = row[11] != null ? String.valueOf(row[11]) : "";
 
                 String von = "";
 
@@ -304,28 +331,58 @@
                 }
 
                 if (!bis.equals(von) && !bis.equals("")) {
-                    out.println("<td>" + von + " - " + bis + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis + "</td>");
 
                 } else {
-                    out.println("<td>" + von + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
                 }
 
-                if (sewBezeichnung == null || sewBezeichnung.equals("") || sewBezeichnung.equalsIgnoreCase("null")) {
-                    out.println("<td>-</td>");
-                } else {
-                    out.println("<td>" + sewBezeichnung + "</td>");
-                }
+                List<EinzelbelegHatAmtWeihe_MM> listAmtWeihe = EinzelbelegDB.getListEinzelbelegHatAmtWeihe(Integer.parseInt(eId));
 
-                if (ssBezeichnung == null || ssBezeichnung.equals("") || ssBezeichnung.equalsIgnoreCase("null")) {
-                    out.println("<td>-</td>");
+                if (listAmtWeihe == null || listAmtWeihe.isEmpty()) {
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">-</td>");
                 } else {
-                    out.println("<td>" + ssBezeichnung + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">");
+
+                    for (EinzelbelegHatAmtWeihe_MM rowAmtWeihe : listAmtWeihe) {
+
+                        String tempAmtWeihe = rowAmtWeihe.getAmtWeihe().getBezeichnung();
+
+                        if (tempAmtWeihe == null || tempAmtWeihe.equals("") || tempAmtWeihe.equalsIgnoreCase("null")) {
+                            out.println("-<br>");
+                        } else {
+                            out.println(tempAmtWeihe + "<br>");
+                        }
+
+                    }
+                    out.println("</td>");
+                }
+                out.println("</td>");
+
+                List<EinzelbelegHatStand> listStand = EinzelbelegDB.getListEinzelbelegHatStand(Integer.parseInt(eId));
+
+                if (listStand == null || listStand.isEmpty()) {
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">-</td>");
+                } else {
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">");
+
+                    for (EinzelbelegHatStand rowStand : listStand) {
+
+                        String tempStand = rowStand.getSelektionStand().getBezeichnung();
+
+                        if (tempStand == null || tempStand.equals("") || tempStand.equalsIgnoreCase("null")) {
+                            out.println("-<br>");
+                        } else {
+                            out.println(tempStand + "<br>");
+                        }
+                    }
+                    out.println("</td>");
                 }
 
                 if (kontext == null || kontext.equals("") || kontext.equalsIgnoreCase("null")) {
-                    out.println("<td>-</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">-</td>");
                 } else {
-                    out.println("<td>" + kontext + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + kontext + "</td>");
                 }
 
                 out.println("</tr>");
@@ -335,23 +392,31 @@
         } catch (Exception e) {
             out.println(e);
         }
+        out.println("</tbody>");
         out.println("</table>\n");
     }
 
     //Gast: Personen Katagorie/Feld Verwandte (Name d. person), Verwandschaftsgrade (z.b Gottfried, Vater)
     if (modul.equals("Verwandte")) {
-        out.println("<table>\n");
 %>
-<tr>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="gast_person" />
-            <jsp:param name="Textfeld" value="PersonName" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="gast_person" />
-            <jsp:param name="Textfeld" value="Verwandtschaftsgrade" />
-        </jsp:include></th>
-</tr>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <thead class="ut-table__header ">
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="gast_person" />
+                    <jsp:param name="Textfeld" value="PersonName" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="gast_person" />
+                    <jsp:param name="Textfeld" value="Verwandtschaftsgrade" />
+                </jsp:include>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="ut-table__body">
 <%
             try {
 
@@ -365,17 +430,22 @@
                     String standardname = row[1] != null ? String.valueOf(row[1]) : "";
                     String bezeichnung = row[2] != null ? String.valueOf(row[2]) : "";
 
-                    out.println("<tr>");
-                    out.println("<td><a href=\"person?ID=" + pId + "\">" + standardname + "</a></td>");
-                    out.println("<td>" + bezeichnung + "</td>");
+                    out.println("<tr class=\"ut-table__row\">");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">");
+                    if (isGast)
+                        out.println("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + pId) + "\">" + Utils.escapeHTML(standardname) + "</a>");
+                    else
+                        out.println("<a class=\"ut-link\" href=\"person?ID=" + pId + "\">" + Utils.escapeHTML(standardname) + "</a>");
+                    out.println("</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + Utils.escapeHTML(bezeichnung) + "</td>");
                     out.println("</tr>");
                     atLeastOne = true;
                 }//end for
 
                 if (!atLeastOne) {
-                    out.println("<tr>");
-                    out.println("<td>-</td>");
-                    out.println("<td>-</td>");
+                    out.println("<tr class=\"ut-table__row\">");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">-</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">-</td>");
                     out.println("</tr>");
                 }
 
@@ -383,13 +453,13 @@
                 out.println(e);
             }
 
+            out.println("</tbody>");
             out.println("</table>\n");
         }
-
     }
 
     if (formular.equals("edition")) {
-        //Backend: Edition, Tab Überlieferung (Überlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat) [z.b E125]
+        //Backend: Edition, Tab �berlieferung (�berlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat) [z.b E125]
         if (modul.equals("ueberlieferung")) {
             out.println("<table>\n");
 %>
@@ -449,7 +519,11 @@
                 String bezeichnungOrt = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
                 out.println("<tr>");
-                out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
+                out.println("<td>&nbsp;</td><td>");
+                if (isGast)
+                    out.println("<a href=\"" + Utils.getPidUrl(request, "T" + handschriftId) + "\">");
+                else
+                    out.println("<a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="quelle" />
@@ -534,7 +608,7 @@
         }
     }
 
-    //Backend: Quellen --> Tab: Überlieferung (Uberlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
+    //Backend: Quellen --> Tab: Überlieferung (Überlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
     if (formular.equals("quelle")) {
         if (modul.equals("ueberlieferung")) {
             out.println("<table>\n");
@@ -600,7 +674,11 @@
         String bezeichnung = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
         out.println("<tr>");
-        out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
+        out.println("<td>&nbsp;</td><td>");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "T" + handschriftId) + "\">");
+        else
+            out.println("<a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
 
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -680,28 +758,40 @@
         out.println("</table>\n");
     }
 
-//Gast:  Quellen --> Bereich/Katagorie Überlieferung
+//Gast:  Quellen --> Bereich/Katagorie �berlieferung
     if (modul.equals("ueberlieferungRO")) {
-        out.println("<table id=\"ueberlieferung\" class=\"content-table\">\n");
 %>
-<tr>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="quelle" />
-            <jsp:param name="Textfeld" value="Signatur" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="quelle" />
-            <jsp:param name="Textfeld" value="Sigle" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="quelle" />
-            <jsp:param name="Textfeld" value="Datierung" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="quelle" />
-            <jsp:param name="Textfeld" value="Schriftheimat" />
-        </jsp:include></th>
-</tr>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <thead class="ut-table__header ">
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Signatur" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Sigle" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Datierung" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Schriftheimat" />
+                </jsp:include>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="ut-table__body">
+
 <%
     try {
 
@@ -713,7 +803,7 @@
 
             List<Object[]> resultList_2 = ModulIncDB.getListGastQuelleSignaturen(edId, id);
 
-            out.println("<tr><th colspan=4><b>");
+            out.println("<tr class=\"ut-table__row\"><th class=\"ut-table__item ut-table__header__item\" scope=\"col\" colspan=\"4\"><b>");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="quelle" />
@@ -740,9 +830,9 @@
 
                     String bezeichnung = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
-                    out.println("<tr>");
-                    out.println("<td>" + bibliothekssignatur + "</td>");
-                    out.println("<td>" + sigel + "</td>");
+                    out.println("<tr class=\"ut-table__row\">");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + bibliothekssignatur + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + sigel + "</td>");
 
                     String von = "";
 
@@ -795,13 +885,13 @@
                     }
 
                     if (!bis.equals(von) && !bis.equals("")) {
-                        out.println("<td>" + von + " - " + bis
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis
                                 + "</td>");
                     } else {
-                        out.println("<td>" + von + "</td>");
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
                     }
 
-                    out.println("<td>" + bezeichnung + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + bezeichnung + "</td>");
 
                     out.println("</tr>");
                 }
@@ -809,58 +899,68 @@
         } catch (Exception e) {
             out.println(e);
         }
+        out.println("</tbody>");
         out.println("</table>\n");
     }
 
     //Gast:  Quellen --> Bereich/Katagorie Standard Edition &n Weitere Editionen (Qeullen, Reihe, Bd., Ort, Jahr, Seiten, Herausgeber)
     if (modul.equals("edition")) {
-        out.println("<table id=\"edition\">\n");
+
 %>
-<tbody  valign="bottom">
-
-    <tr>
-        <th class="date">&nbsp;</th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Titel" />
-            </jsp:include></th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Reihe" />
-            </jsp:include></th>
-        <th class="date">Bd.</th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Ort" />
-            </jsp:include></th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Jahr" />
-            </jsp:include></th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Seiten" />
-            </jsp:include></th>
-        <th class="date">Nummer</th>
-        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="quelle" />
-                <jsp:param name="Textfeld" value="Herausgeber" />
-            </jsp:include></th>
-    </tr>
-    <%
-        int count = 0;
-        count++;
-        if (count % 2 == 0) {
-            out.println("<tr>");
-        } else {
-            out.println("<tr bgcolor='#AACCDD'>");
-        }
-
-    %>	<td><strong><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="quelle" />
-            <jsp:param name="Textfeld" value="StandardEdition" />
-        </jsp:include></strong></td>
-
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <thead class="ut-table__header ">
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item" scope="col">&nbsp;</th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Titel" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Reihe" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">Bd.</th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Ort" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Jahr" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Seiten" />
+                </jsp:include>
+            </th>
+            <th class="ut-table__item ut-table__header__item" scope="col">Nummer</th>
+            <th class="ut-table__item ut-table__header__item" scope="col">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                    <jsp:param name="Formular" value="quelle" />
+                    <jsp:param name="Textfeld" value="Herausgeber" />
+                </jsp:include>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="ut-table__body ">
+        <tr class="ut-table__row">
+            <td class="ut-table__item ut-table__body__item">
+                <strong>
+                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                        <jsp:param name="Formular" value="quelle" />
+                        <jsp:param name="Textfeld" value="StandardEdition" />
+                    </jsp:include>
+                </strong>
+            </td>
 
 <%    boolean firstEdition = true;
     boolean showNummer = false;
@@ -872,14 +972,11 @@
         for (Object[] row : resultList) {
 
             if (!firstEdition) {
-                count++;
-                if (count % 2 == 0) {
-                    out.println("<tr>");
-                } else {
-                    out.println("<tr bgcolor='#AACCDD'>");
-                }
-                out.println("<td></td>");
+
+                out.println("<tr class=\"ut-table__row\">");
+                out.println("<td class=\"ut-table__item ut-table__body__item\"></td>");  //to have empty space below the standard edition
             }
+
             firstEdition = false;
 
             String eId = row[0] != null ? String.valueOf(row[0]) : "-1";
@@ -891,19 +988,19 @@
             String qiSeiten = row[6] != null ? String.valueOf(row[6]) : row[7] != null ? String.valueOf(row[7]) : "--";
             String nummer = (row[8] != null && !String.valueOf(row[8]).trim().equals("")) ? String.valueOf(row[8]) : "--";
 
-            out.println("<td>" + titel + "</td>");
-            out.println("<td>" + DBtoHTML(reihe) + "</td>");
-            out.println("<td>" + DBtoHTML(band) + "</td>");
-            out.println("<td>" + DBtoHTML(ort) + "</td>");
-            out.println("<td>" + DBtoHTML(jahr) + "</td>");
-            out.println("<td>" + DBtoHTML(qiSeiten) + "</td>");
-            out.println("<td>" + DBtoHTML(nummer) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + titel + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(reihe) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(band) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(ort) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(jahr) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(qiSeiten) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(nummer) + "</td>");
 
             if (nummer != null && !nummer.trim().equals("")) {
                 showNummer = true;
             }
 
-            out.println("<td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">");
 
             List<String> resultList_2 = ModulIncDB.getListGastQuelleEditionHerausgeber(eId);
             boolean first = true;
@@ -923,17 +1020,15 @@
         } //end for 1
 
         if (firstEdition) {
-            out.println("<td colspan=\"8\"></tr>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\" colspan=\"8\"></td></tr>");
         }
-        count++;
-        if (count % 2 == 0)
-            out.println("<tr>");
-        else
-            out.println("<tr bgcolor='#AACCDD'>");
+
+        out.println("<tr class=\"ut-table__row\">");
 %>
-<td><jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="quelle" />
-        <jsp:param name="Textfeld" value="WeitereEditionen" />
+<td  class="ut-table__item ut-table__body__item">
+    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+        <jsp:param name="Formular" value="gast_quelle" />
+        <jsp:param name="Datenfeld" value="WeitereEditionen" />
     </jsp:include>
 </td>
 
@@ -945,13 +1040,8 @@
         for (Object[] row_3 : resultList_3) {
 
             if (!firstEdition) {
-                count++;
-                if (count % 2 == 0) {
-                    out.println("<tr>");
-                } else {
-                    out.println("<tr bgcolor='#AACCDD'>");
-                }
-                out.println("<td></td>");
+                out.println("<tr class=\"ut-table__row\">");
+                out.println("<td class=\"ut-table__item ut-table__body__item\"></td>");
             }
             firstEdition = false;
 
@@ -964,19 +1054,19 @@
             String qiSeiten = row_3[6] != null ? String.valueOf(row_3[6]) : row_3[7] != null ? String.valueOf(row_3[7]) : "--";
             String nummer = (row_3[8] != null && !String.valueOf(row_3[8]).trim().equals("")) ? String.valueOf(row_3[8]) : "--";
 
-            out.println("<td>" + titel + "</td>");
-            out.println("<td>" + DBtoHTML(reihe) + "</td>");
-            out.println("<td>" + DBtoHTML(band) + "</td>");
-            out.println("<td>" + DBtoHTML(ort) + "</td>");
-            out.println("<td>" + DBtoHTML(jahr) + "</td>");
-            out.println("<td>" + DBtoHTML(qiSeiten) + "</td>");
-            out.println("<td>" + DBtoHTML(nummer) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + titel + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(reihe) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(band) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(ort) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(jahr) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(qiSeiten) + "</td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">" + DBtoHTML(nummer) + "</td>");
 
             if (nummer != null && !nummer.trim().equals("")) {
                 showNummer = true;
             }
 
-            out.println("<td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">");
 
             List<String> resultList_4 = ModulIncDB.getListGastQuelleEditionHerausgeber(eId);
 
@@ -999,7 +1089,12 @@
     } catch (Exception e) {
         out.println(e);
     }
-    out.println("</tbody valign=\"bottom\">\n");
+
+    if (firstEdition) {
+        out.println("<td class=\"ut-table__item ut-table__body__item\" colspan=\"8\"></td></tr>");
+    }
+
+    out.println("</tbody>");
     out.println("</table>\n");
     if (!showNummer) {
 %>
@@ -1084,6 +1179,7 @@
         out.println("</table>\n");
     } //korrektor
 
+    //Backend: (mgh)lemma --> Tab Belege (Beleg, Belegform, Person, Standardname, Datierung)
     if (modul.equals("belege")) {
         out.println("<table>\n");
 %>
@@ -1100,10 +1196,7 @@
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="mgh_lemma" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Datierung" />
@@ -1131,8 +1224,11 @@
             String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
             String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
 
-            out.println("<tr>");
-            out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
+            out.println("<tr><td>");
+            if (isGast)
+                out.println("<a href=\"" + Utils.getPidUrl(request, "B" + einzelbelegId) + "\">");
+            else
+                out.println("<a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="mgh_lemma" />
@@ -1152,7 +1248,10 @@
     if (personPkz.equals("")) {
         out.println("--");
     } else {
-        out.println("<a href=\"person?ID=" + personId + "\">");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "P" + personId) + "\">");
+        else
+            out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="mgh_lemma" />
@@ -1234,7 +1333,6 @@
 
             out.println("</table>\n");
         }
-
     }//mgh-lemma
 
     if (formular.equals("namenkommentar")) {
@@ -1321,10 +1419,7 @@
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="namenkommentar" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Datierung" />
@@ -1351,8 +1446,11 @@
         String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
         String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
 
-        out.println("<tr>");
-        out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
+        out.println("<tr><td>");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "B" + einzelbelegId) + "\">");
+        else
+            out.println("<a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
 
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1372,7 +1470,10 @@
     if (personPkz.equals("")) {
         out.println("--");
     } else {
-        out.println("<a href=\"person?ID=" + personId + "\">");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "P" + personId) + "\">");
+        else
+            out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="namenkommentar" />
@@ -1450,18 +1551,23 @@
             out.println("</table>\n");
         }
 
-        //backend: namenkommtar, Philologisches Lemma (...) z.b (Idwiniz)
+        //backend: namenkommtar, Philologischer Kommentar (...) z.b (Idwiniz)
         if (modul.equals("PLemma")) {
             try {
                 List<String> plemmaList = ModulIncDB.getListPlemma(id);
 
-                for (String plemma : plemmaList) {
+                if (plemmaList != null && !plemmaList.isEmpty()) {
 
-                    String lemma = plemma;
+                    for (String plemma : plemmaList) {
+                        String lemma = plemma;
 
-                    out.println(format(lemma, "PLemma"));
+                        if (lemma != null) {
+                            out.println(format(lemma, "PLemma"));
+                        } else {
+                            out.println("");
+                        }
+                    }
                 }
-
             } catch (Exception e) {
                 out.println(e);
             }

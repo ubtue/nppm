@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 
 <%
@@ -13,11 +14,11 @@
     <p>
         <% Language.printTextfield(out,session, "login","ErfolgreichAusgeloggt");%>
     </p>
-    
+
     <% Language.printTextfield(out,session, "all","Startseite");%>
-    
+
     <% if(ziel == null || ziel.equals("intern")) { %>
-    	<script>window.location = 'login';</script>
+    	<script>window.location = '<%=Utils.getBaseUrl(request)%>/gast/login';</script>
     <% } else { %>
     	<script>window.location = '.';</script>
   	<% }

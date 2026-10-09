@@ -24,6 +24,14 @@
 
     String sql_akt = sql_max + (sql_max.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + id;
 
+    String excludeText = request.getParameter("excludeText");
+
+    if (excludeText != null && !excludeText.isEmpty() && (guest+title).compareTo("gast_mgh_lemma") == 0) {
+        String excludeClause = " AND " + title + ".MGHLemma NOT LIKE '%" + excludeText + "%'";
+        sql_max += excludeClause;
+        sql_akt += excludeClause;
+    }
+
     Integer akt = AbstractBase.getIntNative(sql_akt) + 1;
     Integer max = AbstractBase.getIntNative(sql_max);
 

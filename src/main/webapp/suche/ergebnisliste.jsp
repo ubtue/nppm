@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@page import="java.util.*"%>
 <%
@@ -62,12 +63,12 @@
 
 
 	  if(fields.size()==0){
-	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+	  	out.println(Language.getTextfield(session, "suche", "schritt2"));
 	  	return;
 	  }
 
       int linecount = SucheDB.getLinecount(tablesString, conditionsString);
-      out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
+      out.println("<p><i>"+Language.getTextfield(session, "suche", "insgesamt")+" <b>"+linecount+"</b> "+Language.getTextfield(session, "suche", "treffer")+"</i></p>");
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
@@ -113,7 +114,7 @@
         boolean even = false;
         List rowsAsMap = SucheDB.getFields(fieldsString, tablesString, conditionsString, export, pageoffset, pageLimit);
         for ( Object o : rowsAsMap ) {
-          java.util.HashMap row = (java.util.HashMap) o;
+          java.util.Map row = (java.util.Map) o;
           out.println("<tr class=\""+(even?"":"un")+"even\">");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
             out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu</a></td>");

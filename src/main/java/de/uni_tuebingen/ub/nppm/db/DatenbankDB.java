@@ -1,32 +1,31 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
-import java.util.ArrayList;
 import org.hibernate.*;
+import org.hibernate.query.Query;
 import javax.persistence.criteria.*;
 import org.hibernate.query.NativeQuery;
 
 public class DatenbankDB extends AbstractBase {
 
-    public static List getListFilter() throws Exception {
+    public static List<DatenbankFilter> getListFilter() throws Exception {
         return getList(DatenbankFilter.class);
     }
 
-    public static List getListMapping() throws Exception {
+    public static List<DatenbankMapping> getListMapping() throws Exception {
         return getList(DatenbankMapping.class);
     }
 
-    public static List getListSelektion() throws Exception {
+    public static List<DatenbankSelektion> getListSelektion() throws Exception {
         return getList(DatenbankSelektion.class);
     }
 
-    public static List getListSprache() throws Exception {
+    public static List<DatenbankSprache> getListSprache() throws Exception {
         return getList(DatenbankSprache.class);
     }
 
-    public static List getListTexte() throws Exception {
+    public static List<DatenbankTexte> getListTexte() throws Exception {
         return getList(DatenbankTexte.class);
     }
 
@@ -49,6 +48,11 @@ public class DatenbankDB extends AbstractBase {
 
             return null;
         }
+    }
+
+    public static String getLabel(String language, String formular, String textfeld, Object... args) throws Exception  {
+        String template = getLabel(language, formular, textfeld);
+        return String.format(template, args);
     }
 
     public static String getLabel(String language, String formular, String textfeld) throws Exception {
@@ -111,18 +115,6 @@ public class DatenbankDB extends AbstractBase {
         return null;
     }
 
-    public static Object getSingleResult(String sql) throws Exception {
-        try (Session session = getSession();) {
-            NativeQuery query = session.createNativeQuery(sql);
-            List<Object> rows = query.getResultList();
-            if (!rows.isEmpty()) {
-                return rows.get(0);
-            } else {
-                return null;
-            }
-        }
-    }
-
     public static List<Object[]> getResult(String sql) throws Exception {
         try (Session session = getSession()) {
             NativeQuery query = session.createNativeQuery(sql);
@@ -140,7 +132,7 @@ public class DatenbankDB extends AbstractBase {
         }
     }
 
-    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {;
+    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='" + tabelle + "';";
             NativeQuery query = session.createNativeQuery(SQL);

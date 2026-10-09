@@ -1,0 +1,179 @@
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
+
+<!--
+    Original privacy statement, see: https://uni-tuebingen.de/datenschutzerklaerung/
+    All changes to the original should be marked as class="changed"!!!
+-->
+
+<% if (Utils.isDevelopmentEnvironment()) { %>
+    <style type="text/css">
+        .changed {
+            color: blue !important;
+        }
+    </style>
+    <p class="changed"><i>Hinweis: Dieser Textblock wird nur in der Entwicklungsumgebung angezeigt. Änderungen zur Original-Datenschutzerklärung der Uni Tübingen sind ebenfalls nur in der Entwicklungsumgebung farblich hervorgehoben.</i></p>
+<% } %>
+
+<div id="privacy">
+    <h1 class="ut-heading ut-heading--h1 changed">Datenschutzerklärung der NPPM-Webseite</h1>
+    <p>Sehr geehrte Webseitenbesucherinnen und Webseitenbesucher,</p>
+    <p class="changed">wir schätzen Ihr Interesse an unserem Projekt "NPPM - Namen, Personen und Personengruppen des Mittelalters" sehr.</p>
+    <p>Mittels dieser Datenschutzerklärung möchten wir Sie im Folgenden über die Datenverarbeitung Ihrer personenbezogenen Daten (im Folgenden „Daten“) informieren, die aus dem Besuch oder der Nutzung von Funktionen <font class="changed">unserer Webseite</font> resultieren.</p>
+    <p class="changed">Wir bitten Sie, diese Datenschutzerklärung sorgfältig durchzulesen, bevor Sie unsere Webseite weiter besuchen oder die auf der Webseite enthaltenen Funktionen nutzen.</p>
+    <p>Mit dem Besuch <font class="changed">der NPPM-Webseite</font> stimmen Sie den im Folgenden beschriebenen Verarbeitungen und Nutzungen Ihrer Daten zu.</p>
+    <p>Unsere Datenschutzerklärung ist nur für <font class="changed">die NPPM-Webseite</font> gültig und nicht für die Webseiten Dritter.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Datenschutz und Datensicherheit</h2>
+    <p>Der Schutz Ihrer Privatsphäre ist uns ein wichtiges Anliegen. Zum Schutz Ihrer Daten trifft die <font class="changed">Universitätsbibliothek Tübingen</font> eine Vielzahl an technischen und organisatorischen Maßnahmen, um eine unbefugte Kenntnisnahme und Weitergabe, Manipulation, Verlust und unbefugte Löschung wirksam verhindern zu können.</p>
+    <p>Die von uns ergriffenen Maßnahmen unterliegen dabei der stetigen Aktualisierung. Wir orientieren uns dabei an den gesetzlichen Vorgaben, Best-Practice-Ansätzen sowie technischen Entwicklungen.</p>
+    <p>Im Folgenden unterrichten wir Sie über Art, Umfang und Zweck der Erhebung, Verarbeitung und Nutzung Ihrer Daten durch die <font class="changed">Universitätsbibliothek Tübingen</font>, sofern dies aus dem Besuch oder der Nutzung der Funktionen <font class="changed">unserer Webseite resultiert</font>.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Verantwortlicher für diese Datenschutzerklärung und diesen Onlineauftritt</h2>
+    <div class="changed">
+        <p><b>Universitätsbibliothek Tübingen</b></p>
+        <p>
+            Regine Tobias<br/>
+            Wilhelmstr. 32<br/>
+            72074 Tübingen<br/>
+            E-Mail: <a class="ut-link ut-link--email ut-link--context-icon" href="mailto:direktion@ub.uni-tuebingen.de">direktion@ub.uni-tuebingen.de</a><br/>
+            Telefon +49 7071 29-77854
+        </p>
+    </div>
+
+    <h2 class="ut-heading ut-heading--h2">Ansprechpartner für den Datenschutz beim Verantwortlichen</h2>
+        <b>Datenschutzbeauftragter</b><br/>
+        Geschwister-Scholl-Platz<br/>
+        72074 Tübingen<br/>
+        E-Mail: <a class="ut-link ut-link--email ut-link--context-icon" href="mailto:datenschutz@uni-tuebingen.de">datenschutz@uni-tuebingen.de</a><br/>
+        Telefon: +49 70 71 29-0<br/>
+        <a class="ut-link ut-link--external ut-link--context-icon" target="_blank" href="//uni-tuebingen.de/einrichtungen/personalvertretungen-beratung-beauftragte/datenschutzbeauftragter/">Website des Datenschutzbeauftragten</a>
+    </p>
+
+    <h2 class="ut-heading ut-heading--h2">Umfang der Datenerhebung, -verarbeitung und -nutzung</h2>
+    <p>Grundsätzlich verfolgen wir das Ziel, die Erhebung, Verarbeitung und Nutzung von personenbezogenen Daten während Ihres Besuchs unserer Webseiten auf das erforderliche Mindestmaß zu beschränken. Auch erheben wir i.d.R. nur diejenigen Daten von Ihnen, die wir zwingend zur Zweckerfüllung benötigen.</p>
+    <p>Ebenfalls erheben wir wissentlich keine personenbezogenen Daten von Minderjährigen (= Personen unter 18 Jahren). In Fällen, in denen wir feststellen, dass uns personenbezogene Daten durch Minderjährige zur Verfügung gestellt wurden, löschen wir diese Daten umgehend, wenn sich kein nachgelagerter Prozess anschließt. Erziehungsberechtigten empfehlen wir, auf die Internet-Aktivitäten der in ihrer Obhut befindlichen Minderjährigen zu achten.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Personenbezogene Daten</h2>
+    <p>Personenbezogene Daten sind gemäß Art. 4 DSGVO alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Dies sind z. B. Angaben wie der Vor- und Nachname, die Anschrift, die E-Mail-Adresse, die Telefon- oder Mobilfunknummer, aber i.d.R. auch die IP-Adresse.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Zweck der Datenverarbeitungen</h2>
+    <p>Sofern Sie uns Ihre Daten freiwillig zu den im Folgenden aufgeführten Zwecken mitteilen, verarbeiten und nutzen wir diese Daten ausschließlich für die Zwecke, für die Sie uns Ihre Daten zukommen lassen haben. Hierzu zählen derzeit folgende Zwecke:</p>
+
+    <!-- all chapters in this element are completely new and do not exist in the original privacy statement -->
+    <!-- (e.g. NPPM-specific features) -->
+    <div class="changed">
+        <h2 class="ut-heading ut-heading--h2">Persönliche Angaben</h2>
+        <p>Für die Bearbeitung von Daten im Backend benötigen Sie einen Benutzeraccount. Dieser kann nur von einem Administrator angelegt werden. Bitte setzen Sie sich bei Bedarf hierzu mit uns in Verbindung. Durch die erste Nutzung des Accounts willigen Sie in die Verarbeitung dieser Daten ein.</p>
+        <table class="table">
+            <tr><th>Feldname</th><th>Pflichtfeld?</th><th>Zweck</th></tr>
+            <tr><td>Benutzername</td><td>ja</td><td>Authentifizierung</td></tr>
+            <tr><td>Nachname</td><td>ja</td><td>Kommunikation</td></tr>
+            <tr><td>Vorname</td><td>ja</td><td>Kommunikation</td></tr>
+            <tr><td>E-Mail-Adresse</td><td>ja</td><td>Authentifizierung,<br/>Passwort zurücksetzen im Bedarfsfall</td></tr>
+            <tr><td>Passwort</td><td>ja</td><td>Authentifizierung</td></tr>
+            <tr><td>Berechtigungen (insb. Admin/Gast, Gruppenzugehörigkeit)</td><td>ja</td><td>Berechtigungen</td></tr>
+            <tr><td>Sprache</td><td>ja</td><td>Nutzerkomfort, Kommunikation</td></tr>
+            <tr><td>Änderungshistorie</td><td>ja</td><td>Nachvollziehbarkeit insb. für Bearbeiter + Administratoren</td></tr>
+            <tr><td>Aktiv/Inaktiv</td><td>ja</td><td>Inaktive Benutzer können sich nicht mehr einloggen, bleiben jedoch in der Änderungshistorie erhalten</td></tr>
+            <tr><td>Bestätigungsstatus der Bearbeitungsrichtlinien (Version + Datum)</td><td>ja</td><td>Rechtliche Absicherung</td></tr>
+        </table>
+    </div>
+
+    <h2 class="ut-heading ut-heading--h2">Verbesserung unseres Onlineauftritts</h2>
+    <p class="changed">Zur Verbesserung der Gestaltung und Inhalte der NPPM-Webseite, der Funktionen und der Benutzerfreundlichkeit des Onlineauftritts erheben, verarbeiten und nutzen wir folgende Daten:</p>
+    <ul class="ut-list ut-list--link-list">
+        <li>IP-Adresse des Webseite-aufrufenden Rechners</li>
+        <li>Datum und Uhrzeit des Aufrufs der Seiten</li>
+        <li>URL-Pfad der angeforderten Seite/Datei und gewünschte Zugriffsmethode</li>
+        <li>Zugriffsstatus des Web-Servers (bspw. Datei übertragen, Datei nicht gefunden)</li>
+        <li>Übertragene Datenmenge</li>
+        <li>Informationen über die für den Zugriff verwendete Software (i.d.R. Browsertyp und -version, Betriebssystem des aufrufenden Rechners)</li>
+        <li>URL, von der aus die Seite/Datei aufgerufen wurde</li>
+    </ul>
+    <p>Die <font class="changed">Universitätsbibliothek Tübingen</font> verwendet die gespeicherten Zugriffs-Protokolldaten zur Identifikation und Nachverfolgung unzulässiger Zugriffsversuche und Zugriffe auf die Website. Die Server-Logfiles werden für die Dauer von <font class="changed">3 Monaten</font> gespeichert und dann gelöscht. Zum Zweck der Optimierung der Website werden die gespeicherten Zugriffs-Protokolldaten in anonymisierter Form ausgewertet. Mit diesen Daten sind dann Personen nicht mehr identifizierbar.</p>
+    <p>Wir erheben, verarbeiten und nutzen diese Daten ausschließlich zu den zuvor benannten statistischen und nicht kommerziellen Zwecken in anonymisierter oder pseudonymisierter Form, sodass ein Rückschluss auf Ihre Person verhindert wird.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Nutzung des Webanalysedienstes Matomo</h2>
+    <p>Wir benutzen Matomo (Piwik), eine Open-Source-Software zur statistischen Auswertung der Besucherzugriffe. Matomo ermöglicht eine anonymisierte Analyse Ihrer Nutzung des Webauftritts. Cookies werden lediglich für die Opt-Out-Möglichkeit verwendet. Matomo ist so konfiguriert, dass keine Tracking Cookies gesetzt werden. Ein Rückschluss auf eine bestimmte Person ist dabei nicht möglich, da Ihre IP-Adresse sofort nach der Verarbeitung und vor der Speicherung anonymisiert wird.</p>
+    <p>Sie können jederzeit der Speicherung und Auswertung dieser Daten durch Matomo widersprechen (Link: <a class="ut-link ut-link--external ut-link--context-icon" href="https://vitruv.uni-tuebingen.de/piwik/index.php?module=CoreAdminHome&action=optOut&language=de&backgroundColor=&fontColor=&fontSize=&fontFamily=" rel="nofollow" target="_blank">https://vitruv.uni-tuebingen.de/piwik/index.php?module=CoreAdminHome&action=optOut&language=de&backgroundColor=&fontColor=&fontSize=&fontFamily=</a>). In diesem Fall wird in Ihrem Browser dauerhaft ein sog. Opt-Out-Cookie abgelegt, der Matomo veranlasst, keinerlei Daten für die Speicherung und Auswertung zu erheben. Sollten Sie dieses Cookie jedoch absichtlich oder unabsichtlich löschen, wird auch der Widerspruch gegen die Datenspeicherung und-auswertung aufgehoben und kann über den oben genannten Link erneuert werden.</p>
+    <p>Alternativ verfügen die meisten modernen Browser über eine so genannte „Do Not Track“-Option, mit der Sie Websites mitteilen, Ihre Nutzeraktivitäten nicht zu verfolgen. Matomo respektiert diese Option.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Cookies</h2>
+    <p><font class="changed">Die NPPM-Webseite der Universitätsbibliothek Tübingen verwendet so genannte Cookies.</font> Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren. Cookies dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert.</p>
+    <p>Folgende Cookies werden gesetzt:</p>
+    <ul class="ut-list ut-list--link-list changed">
+        <li>Server-Cookies für die Nutzung des Webauftritts: Sie werden nach Ende Ihres Besuchs automatisch gelöscht (so genannte „Sitzungs-Cookies“)</li>
+    </ul>
+    <p>Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies für bestimmte Fälle oder generell ausschließen sowie das automatische Löschen der Cookies beim Schließen des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalität unserer Website eingeschränkt sein.</p>
+    <p>Cookies helfen uns
+        <ul class="ut-list ut-list--link-list">
+            <li>bei der Identifizierung der Häufigkeit der Besuche der Webseitenbereiche</li>
+            <li>Präferenzen unserer Webseitenbesucher zu erkennen und die Webseiten entsprechend optimal gestalten zu können</li>
+            <li>die Navigation auf unseren Webseiten zu erleichtern und damit die Benutzerfreundlichkeit unserer Webseiten zu steigern</li>
+            <li>Informationen über einen bestimmten Zeitraum vorzuhalten und den Rechner der Webseitenbesucher zu identifizieren, sobald sie wieder auf unsere Webseiten zurückkehren. Dadurch ist es z.B. möglich, die zuvor von Ihnen gewählten Einstellungen zu verwenden, so dass Sie die Einstellungen nicht erneut vornehmen müssen (z.B. Spracheinstellungen, Log-In-Informationen).</li>
+        </ul>
+    </p>
+
+    <h2 class="ut-heading ut-heading--h2">Verlinkte Webseiten</h2>
+    <p>Unsere Webseiten verfügen über Verlinkungen zu externen Webseiten. Auf die Inhalte dieser Webseiten haben wir keinen Einfluss und übernehmen daher keine Verantwortung oder Haftung für die Zulässigkeit, Richtigkeit, Darstellung und Vollständigkeit der dort veröffentlichten bzw. angezeigten oder abrufbaren Inhalte.</p>
+    <p>Wir informieren Sie hiermit darüber, dass beim Aufruf dieser externen Webseiten möglicherweise Ihre IP-Adresse durch den jeweils zuständigen Webseitenbetreiber protokolliert wird.</p>
+    <p>Wenn Sie unsere Webseiten verlassen, empfehlen wir, die Datenschutzerklärung der externen Webseitenbetreiber zu prüfen, bevor Sie die Webseiten aufrufen oder die dortigen Funktionen nutzen.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Übermittlung oder Weitergabe Ihrer Daten</h2>
+    <p>Eine Übermittlung an Dritte bzw. eine Weitergabe an unsere Geschäftspartner Ihrer durch uns erhobenen, verarbeiteten oder genutzten Daten erfolgt grundsätzlich nicht ohne Ihr ausdrückliches Einverständnis, es sei denn, dass dies:
+        <ul class="ut-list ut-list--link-list">
+            <li>zur Abwicklung unserer vertraglich zugesicherten Leistungen erforderlich ist.</li>
+            <li>zur Durchsetzung unserer Forderungen notwendig wird.</li>
+            <li>durch einen gesetzlichen Erlaubnistatbestand legimitiert wird oder wir gesetzlich zur Weitergabe der Daten verpflichtet sind.</li>
+            <li>für Zwecke der Strafverfolgung, zur Gefahrenabwehr oder zum Schutz unserer Webseiten erforderlich ist.</li>
+            <li>zur Durchsetzung der Rechte Dritter oder im Rahmen der gesetzlichen Auskunftspflichten bzw. einer gerichtlichen Anordnung zur Erteilung der Auskunft erforderlich ist.</li>
+        </ul>
+    </p>
+
+    <h2 class="ut-heading ut-heading--h2">Auskunftsrecht</h2>
+    <p>Webseitenbesucher unseres Onlineauftritts haben gemäß Art. 15 DSGVO das Recht, auf Anfrage, jederzeit und kostenfrei Auskunft über Ihre an der <font class="changed">Universitätsbibliothek Tübingen</font> zu Ihrer Person verarbeiteten Daten zu erhalten. Der Umfang der Auskunft ergibt sich aus Art. 15 DSGVO.</p>
+    <p>Ihr Auskunftsbegehren richten Sie bitte via E-Mail an folgende Adresse (<a class="ut-link ut-link--email ut-link--context-icon" href="mailto:datenschutz@uni-tuebingen.de">datenschutz@uni-tuebingen.de</a>) oder per Post an folgende Adresse: Universität Tübingen, Datenschutzbeauftragter, Geschwister-Scholl-Platz, 72074 Tübingen.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Recht auf Berichtigung Ihrer Daten</h2>
+    <p>Sie haben gemäß Art. 16 DSGVO das Recht, bei Vorliegen unrichtiger oder unvollständiger Daten über Sie, die Berichtigung oder Vervollständigung dieser zu verlangen. Wir werden entsprechende Anfragen prüfen und in berechtigten Fällen die erforderlichen Maßnahmen ergreifen.</p>
+
+    <h2 class="ut-heading ut-heading--h2">Recht auf Löschung und Sperrung Ihrer Daten</h2>
+    <p>Sie haben gemäß Art. 17 DSGVO das Recht auf Löschung Ihrer Daten.<br/>
+       Die von uns über Sie gespeicherten Daten werden datenschutzkonform vernichtet bzw. gelöscht, wenn
+        <ul class="ut-list ut-list--link-list">
+            <li>die gesetzlichen Aufbewahrungsfristen abgelaufen sind, oder</li>
+            <li>die Erhebung oder Verarbeitung unrechtmäßig ist bzw. war, oder</li>
+            <li>die Daten zur Erfüllung der Zwecke, zu denen sie erhoben wurden, nicht mehr erforderlich sind oder</li>
+            <li>sofern Sie Ihre Einwilligung zur Verarbeitung und Nutzung widerrufen haben</li>
+            <li>sofern Sie gemäß Art. 21 DSGVO Widerspruch gegen die Verarbeitung Ihrer Daten einlegen und keine vorrangigen berechtigten Gründe für die Verarbeitung vorliegen.</li>
+        </ul>
+    </p>
+    <p>Wir informieren Sie darüber, dass eine vollständige Löschung erst nach Ablauf der entsprechenden Fristen der steuer- und handelsrechtlichen Vorschriften erfolgt. Bis zum Ablauf dieser Fristen und bis zur endgültigen Löschung werden Ihre Daten entsprechend gesperrt und von uns nicht weiterverarbeitet.</p>
+    <p class="changed">
+        Falls Sie eine vollständige Löschung ihres inaktiven Benutzerkontos wünschen, setzen Sie sich bitte mit uns in Verbindung.
+    </p>
+
+    <h2>Recht auf Einschränkung der Datenverarbeitung</h2>
+    <p>Sie haben gemäß Art. 18 DSGVO das Recht, von uns die Einschränkung der Verarbeitung Ihrer Daten in den in Art. 18 DSGVO festgelegten Fällen und Umfängen zu verlangen. Wir werden entsprechende Anfragen prüfen und in berechtigten Fällen die erforderlichen Maßnahmen ergreifen.</p>
+
+    <h2>Recht auf Datenübertragbarkeit</h2>
+    <p>Sie haben gemäß Art. 20 DSGVO das Recht, Ihre von uns verarbeiteten Daten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten. Auf Ihren ausdrücklichen Wunsch hin werden wir Ihre Daten an die von Ihnen eindeutig benannten Stellen übermitteln, soweit wir dies technisch leisten können und dies datenschutzrechtlich zulässig ist.</p>
+
+    <h2>Widerrufs- und Widerspruchsrecht</h2>
+    <p>Sie haben das Recht, jederzeit und ohne Angabe von Gründen kostenfrei die uns von Ihnen erteilte Einwilligung zur Erhebung, Verarbeitung und Nutzung Ihrer Daten für die Zukunft zu widerrufen bzw. gemäß Art. 21 DSGVO Widerspruch gegen die Verarbeitung Ihrer Daten einzulegen. Ihren Widerruf Ihrer Einwilligung bzw. Widerspruch richten Sie bitte via E-Mail an folgende Adresse (<a class="ut-link ut-link--email ut-link--context-icon" href="mailto:datenschutz@uni-tuebingen.de">datenschutz@uni-tuebingen.de</a>) oder per Post an folgende Adresse: Universität Tübingen, Datenschutzbeauftragter, Geschwister-Scholl-Platz, 72074 Tübingen.</p>
+
+    <h2>Recht auf Beschwerde bei einer Aufsichtsbehörde</h2>
+    <p>Sie haben gemäß Art. 14 i.V.m. Art. 77 DSGVO das Recht auf Beschwerde bei einer Aufsichtsbehörde für den Datenschutz, sofern Sie der Ansicht sind, dass die Verarbeitung Ihrer Daten gegen die DSGVO verstößt. Die zuständige Aufsichtsbehörde ist das Ministerium für Wissenschaft, Forschung und Kunst Baden Württemberg.</p>
+
+    <h2>Recht auf wirksamen gerichtlichen Rechtsbehelf gegen den Verantwortlichen</h2>
+    <p>Sie haben gemäß Art. 79 DSGVO das Recht auf einen wirksamen gerichtlichen Rechtsbehelf, wenn Sie der Ansicht sind, dass Ihre zuvor aufgeführten Rechte infolge einer nicht im Einklang mit den Anforderungen der DSGVO stehenden Verarbeitung Ihrer Daten durch uns oder einen von uns beauftragten Auftragsverarbeiter verletzt wurden.</p>
+
+    <h2>Haftung und Recht auf Schadenersatz</h2>
+    <p>Sie haben gemäß Art. 82 DSGVO Anspruch auf Schadenersatz gegen uns oder die durch uns beauftragten Auftragsverarbeiter, sofern Ihnen wegen eines Verstoßes gegen die DSGVO ein materieller oder immaterieller Schaden entstanden ist.</p>
+
+    <h2>Änderung der Datenschutzerklärung</h2>
+    <p>Diese Datenschutzerklärung wird bei neuen gesetzlichen Vorgaben oder wesentlichen Änderungen des Funktionsumfangs unserer Webseiten mit Wirkung für die Zukunft aktualisiert. Wir empfehlen Ihnen daher, unsere Datenschutzerklärung in regelmäßigen zeitlichen Abständen durchzulesen.</p>
+
+    <!-- basierend auf Original-Datenschutzerklärung mit letzter Änderung 16.03.2021 -->
+    <p>Letzte Änderung: 27.06.2025</p>
+</div>

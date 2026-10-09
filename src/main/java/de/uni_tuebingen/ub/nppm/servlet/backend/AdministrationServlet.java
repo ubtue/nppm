@@ -4,10 +4,14 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.model.BenutzerGruppe;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
+import de.uni_tuebingen.ub.nppm.util.Language;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class AdministrationServlet extends AbstractBackendServlet {
 
@@ -24,30 +28,36 @@ public class AdministrationServlet extends AbstractBackendServlet {
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+         HttpSession session = request.getSession();
         String createMessage = "";
         String errorMessage = "";
 
-        if (request.getParameter("actionCreate") != null && request.getParameter("actionCreate").equals("anlegen")) {
+        if (request.getParameter("actionCreate") != null && request.getParameter("actionCreate").equals(Language.getTextfield(session, "admin", "Anlegen"))) {
 
             boolean fehler = false;
 
             if (request.getParameter("Benutzername").equals("")) {
-                errorMessage = "<p><b>Fehler:</b> Benutzername ist leer</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "admin", "BenutzerNameLeer") +"</p>";
                 fehler = true;
             } else if (BenutzerDB.hasLogin(request.getParameter("Benutzername"))) {
-                errorMessage = "<p><b>Fehler:</b> Benutzername ist bereits vorhanden</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "einstellungen", "LoginNameBesetzt") +"</p>";
                 fehler = true;
             } else if (request.getParameter("Nachname").equals("")) {
-                errorMessage = "<p><b>Fehler:</b> Nachname ist leer</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "admin", "NachnameLeer") +"</p>";
                 fehler = true;
             } else if (request.getParameter("Vorname").equals("")) {
-                errorMessage = "<p><b>Fehler:</b> Vorname ist leer</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "admin", "VornameLeer") +"</p>";
                 fehler = true;
             } else if (request.getParameter("EMail").equals("")) {
-                errorMessage = "<p><b>Fehler:</b> E-Mail ist leer</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "admin", "EmailLeer") +"</p>";
                 fehler = true;
             } else if (request.getParameter("Kennwort").equals("")) {
-                errorMessage = "<p><b>Fehler:</b> Kennwort ist leer</p>";
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "admin", "KennwortLeer") +"</p>";
+                fehler = true;
+            }
+
+            if (BenutzerDB.hasEmail(request.getParameter("EMail"))) {
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "einstellungen", "EmailBesetzt") +"</p>";
                 fehler = true;
             }
 
@@ -84,5 +94,21 @@ public class AdministrationServlet extends AbstractBackendServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher("administration.jsp");
         rd.include(request, response);
+    }
+
+    @Override
+    protected List<String> getAdditionalJavaScript() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("javascript/jquery.ba-resize.min.js");
+        list.add("javascript/helper.js");
+        list.add("javascript/lemmaKorr.js");
+        return list;
+    }
+
+    @Override
+    protected List<String> getAdditionalCss() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("layout/lemmaKorr.css");
+        return list;
     }
 }

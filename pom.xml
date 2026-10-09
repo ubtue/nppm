@@ -3,67 +3,62 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.uni_tuebingen.ub</groupId>
-    <artifactId>neg</artifactId>
+    <artifactId>nppm</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>neg</name>
+    <name>nppm</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <itext.version>2.1.7</itext.version>
     </properties>
 
     <dependencies>
+        <!--
+            Notes:
+                - JS Dependencies are only listed in the plugins section, because we only need the unpacked files
+                  (if you change the version, you must also change the includes in the code!)
+                - To check for updates, just run: `mvn versions:display-dependency-updates`
+        -->
+        <!-- START BLOCK 1: ENVIRONMENT-RELATED (DB, Mail, ...) -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.0.0</version>
+            <!-- The next MySQL version after 9 is actually 26, which is no longer backwards compatible with 8.0 server (default in ubuntu 24.04) so we cannot use it yet. -->
+            <version>9.7.0</version>
         </dependency>
         <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext-rtf</artifactId>
-            <version>2.1.7</version>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>9.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.15.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>5.6.15.Final</version>
+            <artifactId>hibernate-hikaricp</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-            <version>5.6.15.Final</version>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.12.0</version>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>7.1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.16.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
@@ -71,15 +66,96 @@
             <version>1.6.2</version>
         </dependency>
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20240303</version>
-        </dependency>
-        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <!-- END BLOCK 1: ENVIRONMENT-RELATED (DB, Mail, ...) -->
+
+        <!-- START BLOCK 2: APPLICATION-RELATED -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.15.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.6.0</version>
+        </dependency>
+        <dependency>
+            <!-- Note: This belongs to the org.apache.commons group, but the name can't be changed due to mvnrepository.org details -->
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <!--
+                Note: Increasing this version might lead to conflicts until the Hibernate + Jakarta EE Migration is completely finished
+                      (we technically need <classifier>jakarta</classifier>, but that will conflict with javax.cache.cache-api and the jakartaee migration tool)
+            -->
+            <version>3.9.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-io</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20260814</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext-rtf</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- END BLOCK 2: APPLICATION-RELATED -->
+
+        <!-- START BLOCK 3: BUILD/TEST-RELATED (special "scope") -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -88,55 +164,92 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.0</version>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.14.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>jakartaee-migration</artifactId>
+            <version>1.0.13</version>
         </dependency>
-        <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.10.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jQuery-Autocomplete</artifactId>
-            <version>1.4.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jstree</artifactId>
-            <version>3.3.16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.solr</groupId>
-            <artifactId>solr-solrj</artifactId>
-            <version>9.7.0</version>
-        </dependency>
+        <!-- END BLOCK 3: BUILD/TEST-RELATED (special "scope") -->
     </dependencies>
 
     <build>
-        <finalName>neg</finalName>
+        <finalName>nppm</finalName>
+        <!--
+            For additional info regarding the maven lifecycle (available phases, etc.) see also:
+            https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+        -->
         <resources>
             <resource>
-                <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.*</include>
+                </includes>
             </resource>
         </resources>
+        <testResources>
+          <testResource>
+            <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources</directory>
+            <includes>
+              <include>*.*</include>
+            </includes>
+          </testResource>
+        </testResources>
         <plugins>
+            <!-- Use PMD to check code quality (JAVA) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.28.0</version>
+                <configuration>
+                    <failOnViolation>true</failOnViolation>
+                    <printFailingErrors>true</printFailingErrors>
+                    <excludes>
+                        <!-- Exclude classes that are generated by hibernate-jpamodelgen -->
+                        <exclude>**/*_.java</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Experimental: Also use PMD to check code quality (JSP) -->
+            <!-- This needs to be a separare <plugin> section even if it's the same plugin. It won't produce any result if merged with the regular check in multiple <execution> sections. -->
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.28.0</version>
+                <configuration>
+                    <language>jsp</language>
+                    <rulesets>
+                        <ruleset>/category/jsp/bestpractices.xml</ruleset>
+                        <ruleset>/category/jsp/codestyle.xml</ruleset>
+                        <ruleset>/category/jsp/design.xml</ruleset>
+                        <ruleset>/category/jsp/errorprone.xml</ruleset>
+                        <ruleset>/category/jsp/security.xml</ruleset>
+                    </rulesets>
+                    <includes>
+                        <include>**/*.jsp</include>
+                    </includes>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${basedir}/src/main/webapp</compileSourceRoot>
+                    </compileSourceRoots>
+                </configuration>
+            </plugin>
+            -->
+            <!-- Auto-generate JPA Metamodel Classes -->
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>5.2</version>
                 <executions>
                     <execution>
                         <id>process</id>
@@ -156,37 +269,30 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-jpamodelgen</artifactId>
-                        <version>5.6.15.Final</version>
+                        <version>${hibernate.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
+            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.15.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>17</source>
+                    <target>17</target>
                     <compilerArgs>
                         <arg>-Djava.endorsed.dirs=${endorsed.dir}</arg>
                     </compilerArgs>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
+            <!-- Handle dependencies (Download Javadoc, Unpack JS, ...) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.11.0</version>
                 <executions>
-                    <!-- Download javadoc for all dependencies -->
-                    <execution>
-                        <goals>
-                            <goal>sources</goal>
-                            <goal>resolve</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>javadoc</classifier>
-                        </configuration>
-                    </execution>
                     <!-- Unpack JQuery -->
                     <execution>
                         <id>unpack-jquery</id>
@@ -196,12 +302,29 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
                                     <artifactId>jquery</artifactId>
                                     <version>3.7.1</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-jquery-ui</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>jquery-ui</artifactId>
+                                    <version>1.14.2</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -215,7 +338,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -234,7 +356,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -245,12 +366,70 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>unpack-datatables</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>datatables</artifactId>
+                                    <version>2.3.7</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <!-- For e.g. CSV Export in datatables -->
+                        <id>unpack-datatables-buttons</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>datatables-buttons</artifactId>
+                                    <version>3.2.6</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <!-- for e.g. XLSX Export in datatables -->
+                        <id>unpack-jszip</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>jszip</artifactId>
+                                    <version>3.10.1</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
+            <!-- Build WAR file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.1</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -258,35 +437,86 @@
                         </resource>
                     </webResources>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.2.0</version>
                 <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.3</version>
                 <executions>
                     <execution>
-                        <id>Restart Tomcat</id>
-                        <phase>post-integration-test</phase>
+                        <!-- Auto-Migrate WAR file to Jakarta EE -->
+                        <id>jakarta-migration</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.apache.tomcat.jakartaee.MigrationCLI</mainClass>
+                            <classpathScope>runtime</classpathScope>
+                            <arguments>
+                                <argument>${project.build.directory}/${project.build.finalName}.war</argument>
+                                <argument>${project.build.directory}/${project.build.finalName}-jakarta.war</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Deploy WAR file to local tomcat folder -->
+                    <execution>
+                        <id>deploy-war</id>
+                        <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/restartTomcat9.sh</executable>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>-c</argument>
+                                <argument>cp ${project.build.directory}/${project.build.finalName}-jakarta.war /var/lib/tomcat10/webapps/${project.build.finalName}.war</argument>
+                          </arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Restart tomcat -->
+                    <execution>
+                        <id>tomcat-restart</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>systemctl</executable>
+                            <arguments>
+                                <argument>restart</argument>
+                                <argument>tomcat10</argument>
+                          </arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin to be at version 2.22.2 so that they can run JUnit5 -->
+            <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin for JUnit -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.5.6</version>
+                <configuration>
+                    <!-- Skip tests by default, since execution takes very long. Only disable this for specific testing on your local machine if necessary. -->
+                    <skipTests>true</skipTests>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.5.6</version>
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <!-- Improve reporting of code errors by using jxr (used by PMD) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.6.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

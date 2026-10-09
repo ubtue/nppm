@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app metadata-complete="true" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>Nomen et Gens</display-name>
+
+    <!-- SERVLET GROUP 1: GAST / PUBLIC -->
     <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.TestServlet</servlet-class>
+        <servlet-name>DoJumpServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.DoJumpServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/TestServlet</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AjaxServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.AjaxServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AjaxServlet</servlet-name>
-        <url-pattern>/ajax</url-pattern>
+        <servlet-name>DoJumpServlet</servlet-name>
+        <url-pattern>/gast/dojumpid</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>EinzelbelegServlet</servlet-name>
@@ -27,6 +20,30 @@
         <url-pattern>/gast/einzelbeleg</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>ExportCsvServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ExportCsvServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExportCsvServlet</servlet-name>
+        <url-pattern>/gast/export_csv</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ImpressumServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ImpressumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImpressumServlet</servlet-name>
+        <url-pattern>/gast/impressum</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>NamenServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.NamenServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NamenServlet</servlet-name>
+        <url-pattern>/gast/lemma</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>PersonServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.PersonServlet</servlet-class>
     </servlet>
@@ -35,12 +52,44 @@
         <url-pattern>/gast/person</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>RedirectServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectServlet</servlet-class>
+        <servlet-name>QuelleServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.QuelleServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RedirectServlet</servlet-name>
+        <servlet-name>QuelleServlet</servlet-name>
+        <url-pattern>/gast/quelle</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RedirectIdServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectIdServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RedirectIdServlet</servlet-name>
         <url-pattern>/id/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RedirectGndServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectGndServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RedirectGndServlet</servlet-name>
+        <url-pattern>/gnd/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SharedHtmlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <url-pattern>/gast/infos</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>StaticHtmlServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StaticHtmlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StaticHtmlServlet</servlet-name>
+        <url-pattern>/gast/static</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>SucheServlet</servlet-name>
@@ -50,8 +99,7 @@
         <servlet-name>SucheServlet</servlet-name>
         <url-pattern>/gast/einfaches_ergebnis</url-pattern>
     </servlet-mapping>
-    <!-- Erweiterte Suche Frontend-->
-    <servlet>
+        <servlet>
         <servlet-name>FrontendErweiterteSucheServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ErweiterteSucheServlet</servlet-class>
     </servlet>
@@ -67,64 +115,8 @@
         <servlet-name>FrontendErweiterteSucheErgebnisServlet</servlet-name>
         <url-pattern>/gast/suchergebnis</url-pattern>
     </servlet-mapping>
-    <!-- Ende Erweiterte Suche Frontend-->
-    <servlet>
-        <servlet-name>NamenServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.NamenServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>NamenServlet</servlet-name>
-        <url-pattern>/gast/mghlemma</url-pattern>
-        <url-pattern>/gast/namenkommentar</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>QuelleServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.QuelleServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>QuelleServlet</servlet-name>
-        <url-pattern>/gast/quelle</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>HilfeServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HilfeServlet</servlet-name>
-        <url-pattern>/gast/hilfe</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>StartseiteServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StartseiteServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>StartseiteServlet</servlet-name>
-        <url-pattern>/gast/startseite</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ImpressumServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ImpressumServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ImpressumServlet</servlet-name>
-        <url-pattern>/gast/impressum</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>EinstellungenServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EinstellungenServlet</servlet-name>
-        <url-pattern>/einstellungen</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>MghLemmaServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.MghLemmaServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MghLemmaServlet</servlet-name>
-        <url-pattern>/mghlemma</url-pattern>
-    </servlet-mapping>
+
+    <!-- SERVLET GROUP 2: BACKEND -->
     <servlet>
         <servlet-name>BackendEinzelbelegServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinzelbelegServlet</servlet-class>
@@ -158,6 +150,14 @@
         <url-pattern>/person</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.BerechneDateiSpracheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <url-pattern>/berechne</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>BackendEditionServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EditionServlet</servlet-class>
     </servlet>
@@ -182,12 +182,12 @@
         <url-pattern>/admin-auswahlfelder</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.OhneVerknuepfungServlet</servlet-class>
+        <servlet-name>BackendDatenpflegeServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.DatenpflegeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
-        <url-pattern>/ohneVerknuepfung</url-pattern>
+        <servlet-name>BackendDatenpflegeServlet</servlet-name>
+        <url-pattern>/datenpflege</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BackendHandschriftServlet</servlet-name>
@@ -238,6 +238,41 @@
         <url-pattern>/quelle</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>ContentServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.ContentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ContentServlet</servlet-name>
+        <url-pattern>/edit</url-pattern>
+        <url-pattern>/file</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EinstellungenServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EinstellungenServlet</servlet-name>
+        <url-pattern>/einstellungen</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>LemmaServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.LemmaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LemmaServlet</servlet-name>
+        <url-pattern>/lemma</url-pattern>
+    </servlet-mapping>
+
+    <!-- SERVLET GROUP 3: MIXED -->
+    <servlet>
+        <servlet-name>AjaxServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.AjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AjaxServlet</servlet-name>
+        <url-pattern>/ajax</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
     </servlet>
@@ -251,7 +286,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
+        <url-pattern>/gast/login</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>NewPasswordServlet</servlet-name>
@@ -262,22 +297,21 @@
         <url-pattern>/newPassword</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>RESTServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.RESTServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RESTServlet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ShowContentServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ShowContentServlet</servlet-class>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ShowContentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowContentServlet</servlet-name>
         <url-pattern>/content</url-pattern>
         <url-pattern>/gast/content</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ContentServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.ContentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ContentServlet</servlet-name>
-        <url-pattern>/edit</url-pattern>
-        <url-pattern>/file</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>SolrServlet</servlet-name>
@@ -287,6 +321,16 @@
         <servlet-name>SolrServlet</servlet-name>
         <url-pattern>/gast/solr</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.TestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/TestServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- OTHER SETTINGS -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
@@ -297,9 +341,25 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
+
+    <!--
+        default error page
+        (e.g. 404 - "page not found" error for invalid URLs, and others)
+    -->
     <error-page>
-        <location>/gast/servlet/error.jsp</location>
+        <location>/error.jsp</location>
     </error-page>
+
+    <!--
+        error page for specific exceptions
+        (e.g. ID not found, etc.)
+        This needs to be registered in a separage error-page entry even if it's the same template!
+    -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+
     <listener>
         <listener-class>de.uni_tuebingen.ub.nppm.util.ContextListener</listener-class>
     </listener>

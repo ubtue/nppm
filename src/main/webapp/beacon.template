@@ -1,0 +1,8 @@
+﻿#FORMAT: BEACON
+#PREFIX: http://d-nb.info/gnd/
+#TARGET: https://nppm.ub.uni-tuebingen.de/gnd/{ID}
+#NAME: Namen, Personen und Personengruppen des Mittelalters (NPPM)
+#MESSAGE: Namen, Personen und Personengruppen des Mittelalters (NPPM): GND-Referenzen
+#DESCRIPTION: In dieser Datenbank können Sie zurzeit auf insgesamt ca. 450.000 Belege für Personennamen aus dem europäischen Raum des 4. bis 12. Jahrhunderts zugreifen. (Stand August 2025).
+#INSTITUTION: Universitätsbibliothek Tübingen
+#CONTACT: nppm@ub.uni-tuebingen.de

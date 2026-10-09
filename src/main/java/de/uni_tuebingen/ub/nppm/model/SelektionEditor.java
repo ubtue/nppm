@@ -8,7 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "selektion_editor")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionEditor extends SelektionProvenance {
+public class SelektionEditor extends SelektionAbstractProvenance {
 
     @Column(name = "Nachname", length = 50)
     private String nachname;

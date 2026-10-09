@@ -1,16 +1,14 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
-import javax.persistence.criteria.*;
-import org.hibernate.Session;
-import de.uni_tuebingen.ub.nppm.model.*;
-import org.hibernate.query.NativeQuery;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "einzelbeleg")
-public class Einzelbeleg {
+public class Einzelbeleg implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +46,6 @@ public class Einzelbeleg {
 
     @Column(name = "EditionSeite", length = 255)
     private String editionSeite;
-
-    @ManyToOne(targetEntity = SelektionQuellengattung.class)
-    @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
-    private SelektionQuellengattung quelleGattung;
 
     @ManyToOne(targetEntity = SelektionEchtheit.class)
     @JoinColumn(name = "QuelleEchtheitID", referencedColumnName = "ID")
@@ -250,11 +244,17 @@ public class Einzelbeleg {
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
-    @Column(name = "seite")
+    @Column(name = "nr_in_strukt", length = 255)
+    private String nummerInStruktur;
+
+    @Column(name = "seite", length = 255)
     private String seite;
 
-    @Column(name = "raster")
+    @Column(name = "raster", length = 255)
     private String raster;
+
+    @Column(name = "schreiber", length = 255)
+    private String schreiber;
 
     @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
     @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName = "ID")
@@ -362,6 +362,15 @@ public class Einzelbeleg {
         return id;
     }
 
+    @Override
+    public String getPersistentIdentifier() {
+        return "B" + getId();
+    }
+
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getBelegform() + ")";
+    }
+
     public String getBelegnummer() {
         return belegnummer;
     }
@@ -396,10 +405,6 @@ public class Einzelbeleg {
 
     public String getEditionSeite() {
         return editionSeite;
-    }
-
-    public SelektionQuellengattung getQuelleGattung() {
-        return quelleGattung;
     }
 
     public SelektionEchtheit getQuelleEchtheit() {
@@ -502,10 +507,12 @@ public class Einzelbeleg {
         return kommentarDatierung;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
@@ -654,14 +661,6 @@ public class Einzelbeleg {
         return stand;
     }
 
-    public String getSeite() {
-        return seite;
-    }
-
-    public String getRaster() {
-        return raster;
-    }
-
     public void setBelegnummer(String belegnummer) {
         this.belegnummer = belegnummer;
     }
@@ -696,10 +695,6 @@ public class Einzelbeleg {
 
     public void setEditionSeite(String editionSeite) {
         this.editionSeite = editionSeite;
-    }
-
-    public void setQuelleGattung(SelektionQuellengattung quelleGattung) {
-        this.quelleGattung = quelleGattung;
     }
 
     public void setQuelleEchtheit(SelektionEchtheit quelleEchtheit) {
@@ -802,10 +797,12 @@ public class Einzelbeleg {
         this.kommentarDatierung = kommentarDatierung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
@@ -998,5 +995,100 @@ public class Einzelbeleg {
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
+    }
+
+    public String getNummerInStruktur() {
+        return nummerInStruktur;
+    }
+
+    public void setNummerInStruktur(String nummerInStruktur) {
+        this.nummerInStruktur = nummerInStruktur;
+    }
+
+    public String getSeite() {
+        return seite;
+    }
+
+    public void setSeite(String seite) {
+        this.seite = seite;
+    }
+
+    public String getRaster() {
+        return raster;
+    }
+
+    public void setRaster(String raster) {
+        this.raster = raster;
+    }
+
+    public String getSchreiber() {
+        return schreiber;
+    }
+
+    public void setSchreiber(String schreiber) {
+        this.schreiber = schreiber;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Allgemein
+        Utils.addIfValid(jsonObject, "id", "B" + this.getId());
+        Utils.addIfValid(jsonObject, "editionId", this.getEdition() != null ? "E" + this.getEdition().getId() : null);
+        Utils.addIfValid(jsonObject, "quelleId", this.getQuelle() != null ? "Q" + this.getQuelle().getId() : null);
+        Utils.addIfValid(jsonObject, "handschriftId", this.getHandschrift() != null ? "T" + this.getHandschrift().getId() : null);
+        Utils.addIfValid(jsonObject, "belegnummer", this.getBelegnummer());
+        Utils.addIfValid(jsonObject, "kontext", Utils.sanitize(this.getKontext()));
+        Utils.addIfValid(jsonObject, "geschlecht", this.getGeschlecht() != null ? Utils.sanitize(this.getGeschlecht().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "lebendVerstorben", this.getLebendVerstorben() != null ? Utils.sanitize(this.getLebendVerstorben().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "ueberlieferungDatierung", Utils.sanitize(this.getUeberlieferungDatierung()));
+        Utils.addIfValid(jsonObject, "belegform", Utils.sanitize(this.getBelegform()));
+        Utils.addIfValid(jsonObject, "griechisch", Utils.sanitize(this.getGriechisch()));
+        Utils.addIfValid(jsonObject, "diakritisch", Utils.sanitize(this.getDiakritisch()));
+        Utils.addIfValid(jsonObject, "kasus", this.getKasus() != null ? Utils.sanitize(this.getKasus().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "grammatikGeschlecht", this.getGrammatikGeschlecht() != null ? Utils.sanitize(this.getGrammatikGeschlecht().getBezeichnung()) : null);
+
+        // Kommentare
+        Utils.addIfValid(jsonObject, "aswQuellenzitat", Utils.sanitize(this.getAswQuellenzitat()));
+        Utils.addIfValid(jsonObject, "bemerkung", Utils.sanitize(this.getBemerkung()));
+        Utils.addIfValid(jsonObject, "kommentarEthnie", Utils.sanitize(this.getKommentarEthnie()));
+        Utils.addIfValid(jsonObject, "kommentarAreal", Utils.sanitize(this.getKommentarAreal()));
+        Utils.addIfValid(jsonObject, "kommentarVerwandtschaft", Utils.sanitize(this.getKommentarVerwandtschaft()));
+        Utils.addIfValid(jsonObject, "kommentarDatierung", Utils.sanitize(this.getKommentarDatierung()));
+        Utils.addIfValid(jsonObject, "kommentarPerson", Utils.sanitize(this.getKommentarPerson()));
+
+        // Datumsfelder
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
+
+        // Bearbeiter
+        Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? Utils.sanitize(this.getGehoertGruppe().getBezeichnung()) : null);
+
+        // Genauigkeitsfelder
+        Utils.addIfValid(jsonObject, "genauigkeitBisTag", Utils.sanitize(this.getGenauigkeitBisTag() != null ? this.getGenauigkeitBisTag().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisMonat", Utils.sanitize(this.getGenauigkeitBisMonat() != null ? this.getGenauigkeitBisMonat().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahr", Utils.sanitize(this.getGenauigkeitBisJahr() != null ? this.getGenauigkeitBisJahr().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahrhundert", Utils.sanitize(this.getGenauigkeitBisJahrhundert() != null ? this.getGenauigkeitBisJahrhundert().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonTag", Utils.sanitize(this.getGenauigkeitVonTag() != null ? this.getGenauigkeitVonTag().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonMonat", Utils.sanitize(this.getGenauigkeitVonMonat() != null ? this.getGenauigkeitVonMonat().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahr", Utils.sanitize(this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", Utils.sanitize(this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null));
+
+        // Quelle Informationen
+        Utils.addIfValid(jsonObject, "quelleEchtheit", this.getQuelleEchtheit() != null ? Utils.sanitize(this.getQuelleEchtheit().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "quelleDatierung", Utils.sanitize(this.getQuelleDatierung()));
+        Utils.addIfValid(jsonObject, "quelleBisTag", this.getQuelleBisTag());
+        Utils.addIfValid(jsonObject, "quelleBisMonat", this.getQuelleBisMonat());
+        Utils.addIfValid(jsonObject, "quelleBisJahr", this.getQuelleBisJahr());
+        Utils.addIfValid(jsonObject, "quelleBisJahrhundert", this.getQuelleBisJahrhundert());
+        Utils.addIfValid(jsonObject, "quelleVonTag", this.getQuelleVonTag());
+        Utils.addIfValid(jsonObject, "quelleVonMonat", this.getQuelleVonMonat());
+        Utils.addIfValid(jsonObject, "quelleVonJahr", this.getQuelleVonJahr());
+        Utils.addIfValid(jsonObject, "quelleVonJahrhundert", this.getQuelleVonJahrhundert());
+
+        // Editionsinformationen
+        Utils.addIfValid(jsonObject, "editionKapitel", Utils.sanitize(this.getEditionKapitel()));
+        Utils.addIfValid(jsonObject, "editionSeite", Utils.sanitize(this.getEditionSeite()));
+
+        return jsonObject;
     }
 }

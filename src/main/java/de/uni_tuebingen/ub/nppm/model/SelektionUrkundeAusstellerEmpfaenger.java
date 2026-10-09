@@ -8,12 +8,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "selektion_urkundeausstellerempfaenger")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionUrkundeAusstellerEmpfaenger extends SelektionProvenance {
+public class SelektionUrkundeAusstellerEmpfaenger extends SelektionAbstractProvenance {
     @ManyToMany(mappedBy = "empfaenger")
     private Set<Urkunde> urkundeEmpfaenger = new HashSet<Urkunde>();
 
     @ManyToMany(mappedBy = "aussteller")
-    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();;
+    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();
 
     public Set<Urkunde> getUrkundeEmpfaenger() {
         return this.urkundeEmpfaenger;

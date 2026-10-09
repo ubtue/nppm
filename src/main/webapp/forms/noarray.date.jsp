@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
@@ -38,7 +39,7 @@
             for (int j = 0; j < combinedFeldnamen.length; j++) {
                 String accuracyIndex = "Genauigkeit" + zielattributArray[j]; // e.g. GenauigkeitVonJahr
                 String valueIndex = zielattributArray[j]; // e.g. VonJahr
-                if (row.get(accuracyIndex) != null && !row.get(accuracyIndex).toString().equals("-1") || (row.get(valueIndex) != null && !row.get(valueIndex).toString().equals("0"))) {
+                if (row.get(accuracyIndex) != null && !Utils.safeToString(row.get(accuracyIndex)).equals("-1") || (row.get(valueIndex) != null && !Utils.safeToString(row.get(valueIndex)).equals("0"))) {
                     empty = false;
                     break;
                 }
@@ -52,7 +53,7 @@
                 out.println("<td>");
                 int selected = -1;
                 if ((!empty || row != null) && row.get(accuracyIndex) != null) {
-                    selected = Integer.parseInt(row.get(accuracyIndex).toString());
+                    selected = Integer.parseInt(String.valueOf(row.get(accuracyIndex)));
                 }
                 if (!isReadOnly) {
                     out.println("<select name=\"Genauigkeit" + combinedFeldnamen[j] + "\">");
@@ -61,9 +62,9 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + row2.get("ID").toString() + "\" " + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
-                    } else if (Integer.parseInt(row2.get("ID").toString()) == selected) {
-                        String bez = row2.get("Bezeichnung").toString();
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
+                    } else if (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected) {
+                        String bez = Utils.safeToString(row2.get("Bezeichnung"), "--");
                         if (!bez.equals("--")) {
                             out.println(DBtoHTML(bez));
                         }
@@ -75,12 +76,12 @@
 
                 if (!isReadOnly) {
                     out.println("<input name=\"" + combinedFeldnamen[j] + "\""
-                            + " value=\"" + ((!empty || row != null) && row.get(valueIndex) != null ? row.get(valueIndex).toString() : "") + "\""
+                            + " value=\"" + ((!empty || row != null) && row.get(valueIndex) != null ? String.valueOf(row.get(valueIndex)) : "") + "\""
                             + " size=\"10\""
                             + " " + (j == 2 ? "onblur=\"javascript:makeCentury('" + combinedFeldnamen[j] + "', '" + combinedFeldnamen[j + 1] + "')\"" : "")
                             + " />");
                 } else {
-                    out.println(((!empty || row != null) && row.get(valueIndex) != null ? row.get(valueIndex).toString() : ""));
+                    out.println(((!empty || row != null) && row.get(valueIndex) != null ? String.valueOf(row.get(valueIndex)) : ""));
                 }
                 out.println("</td>");
             }
@@ -94,7 +95,7 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + row2.get("ID").toString() + "\" >" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" >" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
                     }
                 }
                 if (!isReadOnly) {

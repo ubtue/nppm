@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
 <%@ include file="../configuration.jsp" %>
@@ -40,7 +41,7 @@
         label = "|<";
         sql = sql.replace("*", "min(" + title + ".ID) ID");
     } else if (request.getParameter("Command").equals("new")) {
-        label = "neu";
+        label = Language.getTextfield(session, "titelNavigation", "Neu");
         sql = sql.replace("*", "max(" + title + ".ID) ID");
     }
 

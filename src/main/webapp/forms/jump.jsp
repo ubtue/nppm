@@ -35,4 +35,7 @@
     <input type="text" name="jumpValue" size="5">
     <input type="hidden" name="jumpTable" value="<%= title %>">
     <input type="hidden" name="akt" value="<%= id %>">
-    <input type="submit" name="jump" value="los">
+    <input type="hidden" name="jump" value="los">
+    <button name="jump" type="submit" value="los">
+        <% Language.printTextfield(out, session, "jump", "Los");%>
+    </button>

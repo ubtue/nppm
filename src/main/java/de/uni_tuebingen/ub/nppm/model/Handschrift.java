@@ -1,11 +1,12 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "handschrift")
-public class Handschrift {
+public class Handschrift implements PersistentIdentifier, History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -36,6 +37,11 @@ public class Handschrift {
         return id;
     }
 
+    @Override
+    public String getPersistentIdentifier() {
+        return "T" + getId();
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -48,34 +54,42 @@ public class Handschrift {
         this.bibliothekssignatur = bibliothekssignatur;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

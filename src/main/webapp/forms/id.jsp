@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ include file="../configuration.jsp" %>
@@ -44,20 +45,21 @@
         provenanceSrc = HandschriftDB.getProvenanceSource(id, "handschrift");
     } else if (title.toLowerCase().equals("mghlemma")) {
         out.print("M");
-        provenanceId = MghLemmaDB.getProvenanceId(id, "mgh_lemma");
-        provenanceSrc = MghLemmaDB.getProvenanceSource(id, "mgh_lemma");
+        provenanceId = LemmaDB.getProvenanceId(id, "mgh_lemma");
+        provenanceSrc = LemmaDB.getProvenanceSource(id, "mgh_lemma");
     }
 
     out.println(id);
     if (!Utils.isGastEnvironment(request)) {
         if(provenanceSrc != null)
-            out.println("<br>Provenienz (DB): "+provenanceSrc);
+            out.println("<br>" + Language.getTextfield(session, "admin", "ProvenanceDB") + ": " + provenanceSrc);
         if(provenanceId != null) {
             if (provenanceSrc != null && provenanceSrc.equals("DMP") && DMPtype != null && DMPprimaryColumn != null) {
-                out.println("<br>Provenienz (ID): <a href=\"https://dmp.ub.uni-tuebingen.de/?table=" + DMPtype + "&mode=view&" + DMPprimaryColumn + "=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
+                out.println("<br>" + Language.getTextfield(session, "admin", "ProvenanceDB") + ": <a class=\"ut-link ut-link--external ut-link--context-icon\" href=\"https://dmp.ub.uni-tuebingen.de/?table=" + DMPtype + "&mode=view&" + DMPprimaryColumn + "=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
             } else {
-                out.println("<br>Provenienz (ID): "+provenanceId);
+                out.println("<br>" + Language.getTextfield(session, "admin", "ProvenanceDB") + ": " + provenanceId);
             }
         }
     }
 %>
+

@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.math.BigInteger;
 import java.util.*;
@@ -156,5 +155,25 @@ public class SelektionDB extends AbstractBase {
         }
         String sql = "UPDATE " + selektion + " SET parentId=" + intVal + " WHERE ID=" + id;
         insertOrUpdate(sql);
+    }
+
+    static public List<Gastquelle> getAllGastquelle() throws Exception {
+        try (Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Gastquelle> query = builder.createQuery(Gastquelle.class);
+            Root<Gastquelle> root = query.from(Gastquelle.class);
+            query.select(root);
+            //id -1 an erste stelle
+            query.orderBy(
+                    builder.asc(
+                            builder.selectCase()
+                                    .when(builder.equal(root.get("id"), -1), 0)
+                                    .otherwise(1)
+                    ),
+                    builder.asc(root.get("id"))
+            );
+
+            return session.createQuery(query).getResultList();
+        }
     }
 }

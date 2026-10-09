@@ -8,7 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "selektion_angabe")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-class SelektionAngabe extends SelektionProvenance {
+class SelektionAngabe extends SelektionAbstractProvenance {
 
     @ManyToMany(mappedBy = "angaben")
     private Set<Einzelbeleg> einzelbelege = new HashSet<>();

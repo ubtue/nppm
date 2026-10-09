@@ -61,10 +61,12 @@ return(x);
 }
 
 function AddCss(){
+//versionierten Link, oder fallback
+var href = window.btCssHref || "layout/bt.css";
 var l=CreateEl("link");
 l.setAttribute("type","text/css");
 l.setAttribute("rel","stylesheet");
-l.setAttribute("href","layout/bt.css");
+l.setAttribute("href",href);
 l.setAttribute("media","screen");
 document.getElementsByTagName("head")[0].appendChild(l);
 }

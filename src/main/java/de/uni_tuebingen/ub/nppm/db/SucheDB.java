@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Constants;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,29 +16,54 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 public class SucheDB extends AbstractBase {
 
-    public static List getFavoriten() throws Exception {
+    public static List<SucheFavoriten> getFavoriten() throws Exception {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getAutocompleteText(String country, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String field, String form, String query, boolean includeUnpublished) throws Exception {
         verifyDynamicTable(form);
-        verifyDynamicColumn(country);
+        verifyDynamicColumn(field);
 
-        String sql = "SELECT DISTINCT " + country + " FROM " + form;
-        boolean addWhereStatement = !query.equals("?");
-        if (addWhereStatement) {
-            sql += " WHERE " + country + " LIKE CONCAT('%', ?1, '%') ";
+        String sql = "SELECT DISTINCT " + field + " FROM " + form;
+        List<String> andConditions = new ArrayList<>();
+
+        if (!includeUnpublished) {
+            if (form.equals("quelle")) {
+                andConditions.add("quelle.ID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")");
+            }
+            if (form.equals("einzelbeleg")) {
+                andConditions.add("einzelbeleg.ID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")");
+            }
+            if (form.equals("person")) {
+                andConditions.add("person.ID IN (" + PersonDB.SUBSELECT_PUBLIC_PERSON_IDS + ")");
+            }
+            if (form.equals("mghlemma")) {
+                andConditions.add("mghlemma.ID IN (" + LemmaDB.SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")");
+            }
         }
-        sql += " ORDER BY " + country;
+
+        boolean addLikeStatement = !query.equals("?");
+        if (!query.equals("?")) {
+            andConditions.add(field + " LIKE CONCAT('%', ?1, '%')");
+        }
+
+        // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
+        if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
+            andConditions.add(field + " NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%'");
+        }
+
+        if (!andConditions.isEmpty()) {
+            sql += " WHERE " + String.join(" AND ", andConditions);
+        }
+
+        sql += " ORDER BY " + field;
 
         try (Session session = getSession()) {
-
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            if (addWhereStatement)
+            if (addLikeStatement)
                 sqlQuery.setParameter(1, query);
             List<String> rows = sqlQuery.getResultList();
             return rows;
@@ -55,9 +81,8 @@ public class SucheDB extends AbstractBase {
         verifyDynamicColumn(attribut);
         verifyDynamicColumn(zwAttribut);
 
-        Map<Integer, String> ret = new HashMap<Integer, String>();
+        Map<Integer, String> ret = new HashMap<>();
         try (Session session = getSession()) {
-            Transaction tx = session.beginTransaction();
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
             NativeQuery query = session.createNativeQuery(sql);
             List<Object[]> rows = query.list();
@@ -89,23 +114,58 @@ public class SucheDB extends AbstractBase {
 
         try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            List<Object[]> rows = sqlQuery.getResultList();
+            List<?> rows = sqlQuery.getResultList();
             //return var
             List<Map<String, String>> ret = new ArrayList<>();
-            //loop over the rows
-            for (Object[] row : rows) {
-                //convert the fields from the row to a map
-                Map<String, String> fieldVal = new HashMap<>();
-                for (int i = 0; i < fields.length; i++) {
-                    String[] name = fields[i].split(" AS ");
-                    if (name.length == 2) {
-                        fields[i] = name[1];
-                    }
-                    if (row[i] != null) {
-                        fieldVal.put(fields[i].trim(), row[i].toString());
-                    }
+
+            //determine the first element which is not null
+            //this is necessary to get the type of the return class
+            Object firstElement = null;
+            for(Object o : rows){
+                if(o != null){
+                    firstElement = o;
+                    break;
                 }
-                ret.add(fieldVal);
+            }
+            /*
+                the return value is from type Object[]
+                This means that the array fields has more than one element
+                and we need to iterate over it
+            */
+            if(firstElement instanceof Object[]){
+                //loop over the rows
+                for (Object[] row : (List<Object[]>) rows) {
+                    //convert the fields from the row to a map
+                    Map<String, String> fieldVal = new HashMap<>();
+                    for (int i = 0; i < fields.length; i++) {
+                        String[] name = fields[i].split(" AS ");
+                        if (name.length == 2) {
+                            fields[i] = name[1];
+                        }
+                        if (row != null && row[i] != null) {
+                            fieldVal.put(fields[i].trim(), row[i].toString());
+                        }
+                    }
+                    ret.add(fieldVal);
+                }
+            /*
+                the return value is from type Object
+                This means that the array fields has only one element
+                and we dont need to iterate over it
+            */
+            }else if(firstElement instanceof Object){
+                for (Object row : (List<Object>) rows) {
+                    //convert the fields from the row to a map
+                    Map<String, String> fieldVal = new HashMap<>();
+                    String[] name = fields[0].split(" AS ");
+                    if (name.length == 2) {
+                        fields[0] = name[1];
+                    }
+                    if (row != null) {
+                        fieldVal.put(fields[0].trim(), row.toString());
+                    }
+                    ret.add(fieldVal);
+                }
             }
 
             return ret;
@@ -176,8 +236,46 @@ public class SucheDB extends AbstractBase {
         }
     }
 
-    public static List<Map> getEinfacheSucheResult(String sql) throws Exception {
-        return getMappedList(sql);
+   public static List<Map> getEinfacheSucheResult(String search) throws Exception {
+        String searchTerm = search;
+        // if search in double quotes, use verbatim, otherwise replace spaces with % wildcards
+        if (searchTerm.startsWith("\"") && searchTerm.endsWith("\"")) {
+            // remove quotes beginning and end
+            searchTerm = searchTerm.substring(1, searchTerm.length() - 1);
+        }
+        //searchTerm = searchTerm.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
+
+        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname AS Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Zitierweise AS editionZitierweise, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
+                   + " FROM einzelbeleg"
+                   + " LEFT JOIN einzelbeleg_hatmghlemma ehk1 ON ehk1.EinzelbelegID=einzelbeleg.ID"
+                   + " LEFT JOIN mgh_lemma ON mgh_lemma.ID=ehk1.MGHLemmaID"
+                   + " LEFT JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID"
+                   + " LEFT JOIN person ON einzelbeleg_hatperson.PersonID=person.ID"
+                   + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
+                   + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
+                   + " WHERE quelle.zuVeroeffentlichen='1'"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%')"
+                   + " AND mgh_lemma.ID IN"
+                   + " ("
+                   + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"
+                   + " LEFT JOIN einzelbeleg_hatmghlemma ON einzelbeleg.ID = einzelbeleg_hatmghlemma.EinzelbelegID"
+                   + " LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID"
+                   + " WHERE einzelbeleg.Belegform ";
+
+        if (searchTerm.contains("%") || searchTerm.contains("_")) {
+            sql += " LIKE ";
+        } else {
+            sql += " = ";
+        }
+
+        sql       += " ? )" // the question mark will be replaced by the escaped value via setParameter() below
+                   + " ORDER BY mgh_lemma.MGHLemma ASC, person.Standardname ASC, einzelbeleg.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC;";
+
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.setParameter(1, searchTerm);
+            return getMappedList(sqlQuery);
+        }
     }
 
 }

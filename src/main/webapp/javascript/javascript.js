@@ -1,5 +1,21 @@
 $(document).ready(function () {
+    $(".select-wrapper").each(function () {
+        const wrapper = $(this);
 
+        wrapper.on("click", ".add-select", function () {
+          const block = $(this).closest(".select-block");
+          const clone = block.clone();
+          clone.find("select").prop("selectedIndex", 0);
+          wrapper.append(clone);
+        });
+
+        wrapper.on("click", ".remove-select", function () {
+          const blocks = wrapper.find(".select-block");
+          if (blocks.length > 1) {
+            $(this).closest(".select-block").remove();
+          }
+        });
+      });
 
     // Onfocus set white border to search field
 	$('#search input').on('focus',function() {

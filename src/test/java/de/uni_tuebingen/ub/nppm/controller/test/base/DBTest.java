@@ -21,7 +21,7 @@ public abstract class DBTest {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new File(prop.getPathNegFile()));
+        Document document = builder.parse(new File(prop.getPathNppmFile()));
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         Node valUrl = (Node) xPath.compile("//Environment[@name='sqlURL']").evaluate(document, XPathConstants.NODE);

@@ -5,7 +5,7 @@ import de.uni_tuebingen.ub.nppm.model.*;
 
 public class BemerkungDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static List<Bemerkung> getList() throws Exception {
         return getList(Bemerkung.class);
     }
 }

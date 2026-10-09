@@ -1,0 +1,98 @@
+#lemmaKorr-list {
+    margin-top: .5rem;
+    padding: .5rem;
+    overflow: auto;
+    scroll-snap-points-y: repeat(100px);
+}
+
+#lemmaKorr-initials {
+    padding: .5rem;
+    border-bottom: 1px solid gray;
+}
+
+#lemmaKorr-list input {
+    background-color: beige;
+    border: 1.5px solid gray;
+    padding: 2px 2px;
+}
+
+#lemmaKorr-clipboardText {
+    font-family: monospace;
+    background-color: whitesmoke;
+}
+
+#lemmaKorr-list a {
+    text-decoration: none;
+}
+
+#lemmaKorr-list a[href]:hover {
+    text-decoration: underline;
+}
+
+.lemmaKorr-done {
+    background-color: rgb(206, 247, 206);
+}
+
+.lemmaKorr-highlight {
+    border: 1px solid dimgray !important;
+}
+
+#lemmaKorr-list span {
+    padding: 2px 2px;
+}
+
+.lemmaKorr-entry:hover .lemmaKorr-clip {
+    visibility: visible;
+}
+
+.lemmaKorr-clip {
+    display: inline-block;
+    visibility: hidden;
+    width: 35px;
+}
+
+.lemmaKorr-korr {
+    display: inline-block;
+    width: 30px;
+}
+
+.lemmaKorr-lemma, .lemmaKorr-beleg {
+    display: inline-block;
+    width: 150px;
+}
+
+.lemmaKorr-lemma:empty:before {
+    content: "\200b";
+}
+
+.lemmaKorr-link, .lemmaKorr-db {
+    display: inline-block;
+    width: 75px;
+}
+
+#lemmaKorr-container button {
+    margin: .25rem .25rem;
+}
+
+#lemmaKorr-container button.active {
+    font-weight: bold;
+}
+
+#lemmaKorr-container button.complete {
+    background-color: rgb(206, 247, 206);
+}
+
+.lemmaKorr-entry {
+    white-space: nowrap;
+    margin-bottom: 2px;
+    line-height: 20px;
+} 
+
+.lemmaKorr-lemma {
+    /*background-color: rgb(248, 249, 250);*/
+    border: 1px solid transparent;
+}
+
+/*div.lemma:hover {
+    border: 1px solid gray
+}*/

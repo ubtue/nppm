@@ -1,0 +1,15 @@
+ALTER TABLE edition ADD INDEX `Titel` (`Titel`);
+ALTER TABLE einzelbeleg ADD INDEX `EditionKapitel` (`EditionKapitel`);
+ALTER TABLE einzelbeleg ADD INDEX `EditionSeite` (`EditionSeite`);
+ALTER TABLE einzelbeleg ADD INDEX `seite` (`seite`);
+ALTER TABLE einzelbeleg ADD INDEX `raster` (`raster`);
+ALTER TABLE person ADD INDEX `Standardname` (`Standardname`);
+ALTER TABLE quelle ADD INDEX `Bezeichnung` (`Bezeichnung`);
+ALTER TABLE quelle ADD INDEX `VonTag` (`VonTag`);
+ALTER TABLE quelle ADD INDEX `VonMonat` (`VonMonat`);
+ALTER TABLE quelle ADD INDEX `VonJahr` (`VonJahr`);
+ALTER TABLE quelle ADD INDEX `VonJahrhundert` (`VonJahrhundert`);
+ALTER TABLE quelle ADD INDEX `BisTag` (`BisTag`);
+ALTER TABLE quelle ADD INDEX `BisMonat` (`BisMonat`);
+ALTER TABLE quelle ADD INDEX `BisJahr` (`BisJahr`);
+ALTER TABLE quelle ADD INDEX `BisJahrhundert` (`BisJahrhundert`);

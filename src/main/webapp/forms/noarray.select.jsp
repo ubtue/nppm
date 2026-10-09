@@ -4,55 +4,56 @@
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
 <%!
-public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int selected, int level) {
-    // Unfortunately <optgroup> cannot be used since the group will not be selectable itself,
-    // so instead we use prefix characters to signalize parent/child relationships.
-    String s = "<option value=\"" + node.getId() + "\"";
-    if (node.getId().equals(selected)) {
-        s += " selected";
-    }
-    s += ">";
-
-    for (int i=0;i<level;i++) {
-        s += "&nbsp;&nbsp;";
-    }
-    if (level > 0) {
-        s += "&gt;&nbsp;";
-    }
-
-    s += Utils.escapeHTML(node.getBezeichnung());
-    s += "</option>";
-
-    for (SelektionHierarchy child : node.getChildren()) {
-        if (nodeIdsToDisplay.contains(child.getId()))
-        s += RenderHierarchyNode(child, nodeIdsToDisplay, selected, level + 1);
-    }
-
-    return s;
-}
-
-public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes) {
-    // Make sure we have all delivered nodes as well as all their parents
-    // (Especially in GAST we only get child nodes linked to quelle.zuVeroeffentlichen=1
-    // and cannot display them properly without adding their parent ids.)
-    Set<Integer> ids = new TreeSet<>();
-    for (SelektionHierarchy node : nodes) {
-        ids.add(node.getId());
-        SelektionHierarchy parent = node.getParent();
-        while (parent != null) {
-            ids.add(parent.getId());
-            parent = parent.getParent();
+    public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int selected, int level) {
+        // Unfortunately <optgroup> cannot be used since the group will not be selectable itself,
+        // so instead we use prefix characters to signalize parent/child relationships.
+        String s = "<option value=\"" + node.getId() + "\"";
+        if (node.getId().equals(selected)) {
+            s += " selected";
         }
+        s += ">";
+
+        for (int i = 0; i < level; i++) {
+            s += "&nbsp;&nbsp;";
+        }
+        if (level > 0) {
+            s += "&gt;&nbsp;";
+        }
+
+        s += Utils.escapeHTML(node.getBezeichnung());
+        s += "</option>";
+
+        for (SelektionHierarchy child : node.getChildren()) {
+            if (nodeIdsToDisplay.contains(child.getId())) {
+                s += RenderHierarchyNode(child, nodeIdsToDisplay, selected, level + 1);
+            }
+        }
+
+        return s;
     }
-    return ids;
-}
+
+    public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes) {
+        // Make sure we have all delivered nodes as well as all their parents
+        // (Especially in GAST we only get child nodes linked to quelle.zuVeroeffentlichen=1
+        // and cannot display them properly without adding their parent ids.)
+        Set<Integer> ids = new TreeSet<>();
+        for (SelektionHierarchy node : nodes) {
+            ids.add(node.getId());
+            SelektionHierarchy parent = node.getParent();
+            while (parent != null) {
+                ids.add(parent.getId());
+                parent = parent.getParent();
+            }
+        }
+        return ids;
+    }
 %>
 
 
 <%
     if (feldtyp.equals("select") && !array) {
         int selected = -1;
-        if (Integer.parseInt(id) > 0) {
+        if (Integer.parseInt(id) > 0 && !datenfeld.equals("ErstGliedSelect") && !datenfeld.equals("ZweitGliedSelect")) {
             String sql = "SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"";
             Integer selection = AbstractBase.getIntNative(sql);
             if (selection != null) {
@@ -86,27 +87,48 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
                 }
             }
         } else {
-            String sql = "SELECT * FROM " + auswahlherkunft;
-            if (auswahlherkunftFilter != null && !auswahlherkunftFilter.equals("") && filter != null && !filter.equals("")) {
-                sql += " WHERE " + auswahlherkunftFilter + "='" + filter + "'";
-            }
-            if (!isSorted) {
-                sql += " ORDER BY Bezeichnung ASC";
-            }
+            /*  Erst und Zweitglied select bezieht sich nur auf die Gast umgebung,
+                Deshalb werden hier Lemmas die Constants.forbiddenLemmaSubstring enthalten nicht berücksichtigt.
+            */
+            if (datenfeld.equals("ErstGliedSelect")) {
 
-            List<Map> rowlist = AbstractBase.getMappedList(sql);
-            for (Map row : rowlist) {
-                String value = row.get("Bezeichnung").toString();
-                if (datenfeld.startsWith("Namenkommentar")) {
-                    value = format(value, "PLemma");
-                } else {
-                    value = DBtoHTML(value);
+                List<String> erstGliedlist = LemmaDB.getListErstglied();
+
+                out.println("<option value=\"-\">-</option>");
+
+                for (String erstGlied : erstGliedlist) {
+                    out.println("<option value=\"" + erstGlied + "\">" + erstGlied + "</option>");
                 }
 
-                if (!isReadOnly) {
-                    out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + value + "</option>");
-                } else if (Integer.parseInt(row.get("ID").toString()) == selected) {
-                    out.println(value);
+            } else if (datenfeld.equals("ZweitGliedSelect")) {
+                List<String> zweitGliedlist = LemmaDB.getListZweitglied();
+
+                out.println("<option value=\"-\">-</option>");
+
+                for (String zweitGlied : zweitGliedlist) {
+                    out.println("<option value=\"" + zweitGlied + "\">" + zweitGlied + "</option>");
+                }
+            } else {
+                String sql = "SELECT * FROM " + auswahlherkunft;
+                if (auswahlherkunftFilter != null && !auswahlherkunftFilter.equals("") && filter != null && !filter.equals("")) {
+                    sql += " WHERE " + auswahlherkunftFilter + "='" + filter + "'";
+                }
+                if (!isSorted) {
+                    sql += " ORDER BY Bezeichnung ASC";
+                }
+
+                List<Map> rowlist = AbstractBase.getMappedList(sql);
+                for (Map row : rowlist) {
+                    String value = Utils.safeToString(row.get("Bezeichnung"));
+                    if (datenfeld.startsWith("Namenkommentar")) {
+                        value = format(value, "PLemma");
+                    } 
+
+                    if (!isReadOnly) {
+                        out.println("<option value=\"" + Integer.parseInt(String.valueOf(row.get("ID"))) + "\" " + (Integer.parseInt(String.valueOf(row.get("ID"))) == selected ? "selected" : "") + ">" + value + "</option>");
+                    } else if (Integer.parseInt(String.valueOf(row.get("ID"))) == selected) {
+                        out.println(value);
+                    }
                 }
             }
         }
@@ -115,8 +137,7 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             out.println("</select>");
         }
         if (!tooltip.equals("")) {
-            out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
         }
-
     }
 %>

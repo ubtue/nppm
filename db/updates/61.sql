@@ -1,0 +1,1 @@
+UPDATE `datenbank_mapping` SET `de_Beschriftung` = 'Seite / Nummer', `gb_beschriftung` = 'Site / Number', `fr_beschriftung` = 'Site / Numéro', `la_beschriftung` = 'Site / Number' WHERE (`Formular` = 'einzelbeleg' AND `Datenfeld` = 'Seite' AND `ZielTabelle` = 'einzelbeleg' AND `ZielAttribut` = 'seite');

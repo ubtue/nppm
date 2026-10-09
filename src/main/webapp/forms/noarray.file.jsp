@@ -17,8 +17,8 @@
                else if (zielTabelle.equals("quelle") && zielAttribut.equals("UeberlieferungsKommentarDatei"))
                folder = commentFolder_ueberlieferungskommentar;
              */
-            String href = "javascript:deleteFile('" + zielTabelle + "', '" + zielAttribut + "', '" + columns[0].toString() + "', '" + returnpage + "');";
-            out.println("<a href='" + folder + "/" + columns[1].toString() + "'>" + columns[1].toString() + "</a>");
+            String href = "javascript:deleteFile('" + zielTabelle + "', '" + zielAttribut + "', '" + Utils.safeToString(columns[0]) + "', '" + returnpage + "');";
+            out.println("<a href='" + folder + "/" + Utils.safeToString(columns[1]) + "'>" + Utils.safeToString(columns[1]) + "</a>");
             if (!id.equals("-1") && !isReadOnly) {
                 out.println("<a href=\"" + href + "\">");
                 out.println(txt_delete);

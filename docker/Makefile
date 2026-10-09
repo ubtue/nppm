@@ -1,3 +1,3 @@
 docker_build:
-	cp /var/lib/tomcat9/webapps/neg.war resources/
-	docker build -t neg .
+	cp /var/lib/tomcat10/webapps/nppm.war resources/
+	docker build -t nppm .

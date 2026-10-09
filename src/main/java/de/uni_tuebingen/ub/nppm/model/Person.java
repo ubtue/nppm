@@ -1,11 +1,14 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
-public class Person {
+public class Person extends AbstractModel implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,9 @@ public class Person {
 
     @Column(name = "GND", length = 255)
     private String gnd;
+
+    @Column(name = "Wikidata", length = 255)
+    private String wikidata;
 
     @Column(name = "Standardname", length = 255)
     private String standardname;
@@ -136,6 +142,15 @@ public class Person {
         return id;
     }
 
+    @Override
+    public String getPersistentIdentifier() {
+        return "P" + getId();
+    }
+
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getStandardname() + ")";
+    }
+
     public String getPkz() {
         return pkz;
     }
@@ -150,6 +165,14 @@ public class Person {
 
     public void setGnd(String gnd) {
         this.gnd = gnd;
+    }
+
+    public String getWikidata() {
+        return wikidata;
+    }
+
+    public void setWikidata(String wikidata) {
+        this.wikidata = wikidata;
     }
 
     public String getStandardname() {
@@ -216,34 +239,42 @@ public class Person {
         this.ort = ort;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }
@@ -380,5 +411,29 @@ public class Person {
 
     public void removeEinzelbeleg(int id) {
         this.getEinzelbeleg().removeIf(e -> e.getId() == id);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Allgemeine Informationen
+        Utils.addIfValid(jsonObject, "id", "P" + this.getId());
+        Utils.addIfValid(jsonObject, "pkz", this.getPkz());
+        Utils.addIfValid(jsonObject, "gnd", this.getGnd());
+        Utils.addIfValid(jsonObject, "standardname", Utils.sanitize(this.getStandardname()));
+        Utils.addIfValid(jsonObject, "geschlecht", this.getGeschlecht() != null ? Utils.sanitize(this.getGeschlecht().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "fiktiv", this.getFiktiv() != null ? Utils.sanitize(this.getFiktiv().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", this.getBearbeitungsstatus() != null ? Utils.sanitize(this.getBearbeitungsstatus().getBezeichnung()) : null);
+
+        // Kommentare
+        Utils.addIfValid(jsonObject, "kommentarEthnie", Utils.sanitize(this.getKommentarEthnie()));
+        Utils.addIfValid(jsonObject, "kommentarAreal", Utils.sanitize(this.getKommentarAreal()));
+        Utils.addIfValid(jsonObject, "identifizierungsproblem", Utils.sanitize(this.getIdentifizierungsproblem()));
+
+        // Orte und Metadaten
+        Utils.addIfValid(jsonObject, "ort", Utils.sanitize(this.getOrt()));
+        Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? Utils.sanitize(this.getGehoertGruppe().getBezeichnung()) : null);
+
+        return jsonObject;
     }
 }

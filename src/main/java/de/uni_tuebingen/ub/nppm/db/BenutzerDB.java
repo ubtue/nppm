@@ -7,7 +7,7 @@ import javax.persistence.criteria.*;
 
 public class BenutzerDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static List<Benutzer> getList() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -19,7 +19,7 @@ public class BenutzerDB extends AbstractBase {
         }
     }
 
-    public static List getListAktiv() throws Exception {
+    public static List<Benutzer> getListAktiv() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -32,7 +32,7 @@ public class BenutzerDB extends AbstractBase {
         }
     }
 
-    public static List getListInaktiv() throws Exception {
+    public static List<Benutzer> getListInaktiv() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -80,12 +80,18 @@ public class BenutzerDB extends AbstractBase {
             Root benutzer = criteria.from(Benutzer.class);
             criteria.select(benutzer);
             criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), mail));
-            Benutzer res = session.createQuery(criteria).getSingleResult();
-            return res;
+
+            try {
+                Benutzer res = session.createQuery(criteria).getSingleResult();
+                return res;
+            } catch (javax.persistence.NoResultException e) {
+                return null;
+            }
+
         }
     }
 
-    public static boolean hasEmail(String email) throws Exception{
+    public static boolean hasEmail(String email) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -93,12 +99,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.select(benutzer);
             criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), email));
             boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
-            session.close();
             return inDatabase;
         }
     }
 
-    public static boolean hasLogin(String login) throws Exception{
+    public static boolean hasLogin(String login) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);

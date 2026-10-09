@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
@@ -33,8 +34,15 @@ document.open();
   out.println("<a href=\"?form="+formular+"&Belegform="+request.getParameter("Belegform")+"&limit="+(limit+5)+"\">Nächste "+offset+" Lemmata</a>");
   out.println("</center>");
 */
+
+      String link = Language.getTextfield(session, "suche", "Link");
+      String beleg = Language.getTextfield(session, "person", "Beleg");
+      String datierung = Language.getTextfield(session, "person", "Datierung");
+      String sigleVariante = Language.getTextfield(session, "suche", "SigleVariante");
+      String belegform = Language.getTextfield(session, "suche", "Belegform");
+
       out.println("<table class=\"date\">\n");
-      out.println("<tr><th>Link</th><th>Beleg</th><th>Datierung</th><th>Sigle: Variante</th></tr>\n");
+      out.println("<tr><th>" + link + "</th><th>" + beleg + "</th><th>" + datierung + "</th><th>" + sigleVariante + "</th></tr>\n");
       try {
 
         if(request.getParameter("Belegform").equals("")){
@@ -52,7 +60,7 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg?ID="+row[0]+"\">Beleg...</a></td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+row[0]+"\">" + belegform + "</a></td>");
           if(row[2] == null){
             row[2] = "&nbsp;";
           }
@@ -78,7 +86,7 @@ document.open();
         java.util.List<Object[]> result = SucheDB.getListNative(sql);
         for(Object[] row : result){
         // step 4: we add a paragraph to the document
-                        document.add(new Paragraph(DBtoHTML(row[1].toString()), new Font(Font.TIMES_ROMAN, 28)));
+                        document.add(new Paragraph(DBtoHTML(String.valueOf(row[1].toString())), new Font(Font.TIMES_ROMAN, 28)));
 
         float [] widths = {0.1f,0.1f,0.1f,0.1f,0.2f,0.1f,0.1f,0.1f};
 
@@ -134,7 +142,7 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg?ID="+DBtoHTML(resultRow[0])+"\">Beleg...</a></td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+DBtoHTML(resultRow[0])+"\">" + belegform + "</a></td>");
           out.println("<td>"+(resultRow[2]==null?"&nbsp;":DBtoHTML(resultRow[2]))+"</td>");
           out.println("<td> "+makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10])+"</td>");
 
@@ -144,7 +152,7 @@ document.open();
              Cell dat = new Cell(new Paragraph(makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10]), new Font(Font.TIMES_ROMAN, 8)));
              table.addCell(dat);
 
-          String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung, s2.Bezeichnung  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
+          String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung AS Bezeichnung1, s2.Bezeichnung AS Bezeichnung2  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
 
           out.println("<td><table cellpadding=2 style=\"font-size:8pt\">");
           String sigle = "";
@@ -223,3 +231,5 @@ document.close();
 // step 6: we output the writer as bytes to the response output
 out.println("<a href='../.."+file+"'>Download</a>");
 %>
+
+

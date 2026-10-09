@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
 --
--- Host: localhost    Database: neg
+-- Host: localhost    Database: nppm
 -- ------------------------------------------------------
 -- Server version	8.0.29-0ubuntu0.20.04.3
 
@@ -550,7 +550,7 @@ DROP TABLE IF EXISTS `gastnamenkommentar`;
 /*!50001 DROP VIEW IF EXISTS `gastnamenkommentar`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastnamenkommentar` AS SELECT 
+/*!50001 CREATE VIEW `gastnamenkommentar` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -563,7 +563,7 @@ DROP TABLE IF EXISTS `gastnamenkommentar_zweitglied`;
 /*!50001 DROP VIEW IF EXISTS `gastnamenkommentar_zweitglied`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastnamenkommentar_zweitglied` AS SELECT 
+/*!50001 CREATE VIEW `gastnamenkommentar_zweitglied` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`,
  1 AS `zweitglied`*/;
@@ -577,7 +577,7 @@ DROP TABLE IF EXISTS `gastquelle`;
 /*!50001 DROP VIEW IF EXISTS `gastquelle`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastquelle` AS SELECT 
+/*!50001 CREATE VIEW `gastquelle` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -590,7 +590,7 @@ DROP TABLE IF EXISTS `gastselektion_amtweihe_einzelbeleg`;
 /*!50001 DROP VIEW IF EXISTS `gastselektion_amtweihe_einzelbeleg`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastselektion_amtweihe_einzelbeleg` AS SELECT 
+/*!50001 CREATE VIEW `gastselektion_amtweihe_einzelbeleg` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -603,7 +603,7 @@ DROP TABLE IF EXISTS `gastselektion_amtweihe_person`;
 /*!50001 DROP VIEW IF EXISTS `gastselektion_amtweihe_person`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastselektion_amtweihe_person` AS SELECT 
+/*!50001 CREATE VIEW `gastselektion_amtweihe_person` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -616,7 +616,7 @@ DROP TABLE IF EXISTS `gastselektion_ethnie_einzelbeleg`;
 /*!50001 DROP VIEW IF EXISTS `gastselektion_ethnie_einzelbeleg`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastselektion_ethnie_einzelbeleg` AS SELECT 
+/*!50001 CREATE VIEW `gastselektion_ethnie_einzelbeleg` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -629,7 +629,7 @@ DROP TABLE IF EXISTS `gastselektion_ethnie_person`;
 /*!50001 DROP VIEW IF EXISTS `gastselektion_ethnie_person`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastselektion_ethnie_person` AS SELECT 
+/*!50001 CREATE VIEW `gastselektion_ethnie_person` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;
@@ -642,7 +642,7 @@ DROP TABLE IF EXISTS `gastselektion_stand`;
 /*!50001 DROP VIEW IF EXISTS `gastselektion_stand`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `gastselektion_stand` AS SELECT 
+/*!50001 CREATE VIEW `gastselektion_stand` AS SELECT
  1 AS `ID`,
  1 AS `Bezeichnung`*/;
 SET character_set_client = @saved_cs_client;

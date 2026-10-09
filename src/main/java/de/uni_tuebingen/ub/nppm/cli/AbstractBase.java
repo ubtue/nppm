@@ -10,7 +10,7 @@ public class AbstractBase {
      *       existing tomcat configuration file,
      *       or merge both files together somehow.
      */
-    protected static String propertiesPath = "/root/.neg.properties";
+    protected static String propertiesPath = "/root/.nppm.properties";
 
     /**
      * Load Properties File (e.g. DB access credentials)
@@ -25,7 +25,11 @@ public class AbstractBase {
      * Print usage information & exit with error code
      */
     protected static void Usage(String usage) {
-        System.out.println(usage);
+        System.err.println(usage);
         System.exit(1);
+    }
+
+    protected static void Log(final String message) {
+        System.err.println(message);
     }
 }

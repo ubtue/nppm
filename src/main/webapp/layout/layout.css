@@ -15,16 +15,20 @@ body.popup {
   font-size:	small;
 }
 
+#sidebar {
+  background-color:	#003399;
+  width:                140px;
+}
+
 #navigation {
   background-color:	#003399;
   color:		#FFFFFF;
-  height:		100%;
   position:		absolute;
-  top:			101px;
+  top:			120px;
   left:			0px;
+  width:                141px;
   padding-left:		10px;
   padding-top:		10px;
-  width:		150px;
 }
 
 #navigation a {
@@ -34,23 +38,23 @@ body.popup {
 
 #image {
   background-color:	#003399;
-  width:		150px;
-  height:		75px;
+  height:		100px;
   position:		absolute;
   top:			0px;
   left:			0px;
-  padding-top:	25px;
+  padding-top:	        25px;
 }
 
 #form {
   background-color:	#FFFFFF;
   background:		#FFFFFF;
   position:		absolute;
-  top:			101px;
+  top:			120px;
   left:			151px;
   padding:		10px;
   height:		100%;
   min-width:		800px;
+  margin-top:           10px;
 }
 
 #titel {
@@ -58,12 +62,13 @@ body.popup {
   color:		#FFFFFF;
   position:		absolute;
   top:			0px;
-  left:			151px;
-  height:		100px;
+  left:			150px;
   padding-left:		10px;
   vertical-align:	middle;
   padding-right:	10px;
   min-width:		800px;
+  min-height:           150px;
+  padding-bottom:       10px;
 }
 
 #titel h1 {

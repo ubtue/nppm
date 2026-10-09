@@ -1,14 +1,12 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
-import de.uni_tuebingen.ub.nppm.db.MghLemmaDB;
-import de.uni_tuebingen.ub.nppm.db.NamenKommentarDB;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class NamenServlet extends AbstractGastServlet {
-
-    private int count = 1;
 
     @Override
     protected String getTitle() {
@@ -21,37 +19,23 @@ public class NamenServlet extends AbstractGastServlet {
     }
 
     @Override
-    protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String requestURI = request.getRequestURI();
-        String queryString = request.getQueryString();
-
-        if (requestURI.endsWith("namenkommentar") && queryString != null && queryString.startsWith("ID=")) {
-             if (request.getParameter("ID") == null) {
-                getServletConfig().getServletContext().getRequestDispatcher("/gast/namenkommentar?ID=" + NamenKommentarDB.getFirstPublicNamenlemma().getId()).forward(request, response);
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher("namenkommentar.jsp");
-                rd.include(request, response);
-            }
-        } else if (requestURI.endsWith("mghlemma") && queryString != null && queryString.startsWith("ID=")) {
-            startpage(request, response);
-        } else if (request.getParameter("fromLemma") != null && request.getParameter("fromLemma").equals("MGH-Lemma")) {
-
-            if (request.getParameter("ID") == null) {
-                getServletConfig().getServletContext().getRequestDispatcher("/gast/namenkommentar?ID=" + NamenKommentarDB.getFirstPublicNamenlemma().getId()).forward(request, response);
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher("namenkommentar.jsp");
-                rd.include(request, response);
-            }
-        } else {
-            startpage(request, response);
+    protected String getCanonicalUrl(HttpServletRequest request) {
+        if (request.getParameter("ID") != null) {
+            return Utils.getPidUrl(request, "M" + request.getParameter("ID"));
         }
+        return null;
     }
 
-    private void startpage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (request.getParameter("ID") == null) {
-            response.sendRedirect(request.getContextPath() + "/gast/mghlemma?ID=" + MghLemmaDB.getFirstPublicMGHLemma().getId());
+    @Override
+    protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+       if(request.getParameter("page") != null && request.getParameter("page").equals("stat")){
+            RequestDispatcher rd = request.getRequestDispatcher("statistiklemma.jsp");
+            rd.include(request, response);
+        }
+        else if (request.getParameter("ID") == null) {
+            response.sendRedirect(Utils.getPidUrl(request, LemmaDB.getFirstPublicMGHLemma().getPersistentIdentifier()));
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("mghlemma.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("lemma.jsp");
             rd.include(request, response);
         }
     }

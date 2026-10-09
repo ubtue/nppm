@@ -1,14 +1,17 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "mgh_lemma")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MghLemma {
+public class MghLemma implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,10 @@ public class MghLemma {
 
     @Column(name = "MGHLemma", length = 255)
     private String mghLemma;
+
+    @ManyToOne(targetEntity = SelektionSprachherkunft.class)
+    @JoinColumn(name = "SprachherkunftID", referencedColumnName = "ID")
+    private SelektionSprachherkunft sprachherkunft;
 
     @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
@@ -47,12 +54,47 @@ public class MghLemma {
         return id;
     }
 
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getMghLemma() + ")";
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "M" + getId();
+    }
+
     public String getMghLemma() {
         return mghLemma;
     }
 
     public void setMghLemma(String mghLemma) {
         this.mghLemma = mghLemma;
+    }
+
+    protected String[] getGlieder() {
+        return getMghLemma().split("~");
+    }
+
+    public String getErstglied() {
+        String[] glieder = getGlieder();
+        if (glieder.length >= 1)
+            return glieder[0];
+        return null;
+    }
+
+    public String getZweitglied() {
+        String[] glieder = getGlieder();
+        if (glieder.length >= 2)
+            return glieder[1];
+        return null;
+    }
+
+    public SelektionSprachherkunft getSprachherkunft() {
+        return sprachherkunft;
+    }
+
+    public void setSprachherkunft(SelektionSprachherkunft sprachherkunft) {
+        this.sprachherkunft = sprachherkunft;
     }
 
     public SelektionBearbeitungsstatus getBearbeitungsstatus() {
@@ -63,18 +105,22 @@ public class MghLemma {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
@@ -115,4 +161,16 @@ public class MghLemma {
         this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "mghLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe", Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
+        Utils.addIfValid(jsonObject, "id", "M" + this.getId());
+
+        return jsonObject;
+    }
 }

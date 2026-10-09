@@ -12,6 +12,11 @@ public class ErweiterteSucheServlet extends AbstractGastServlet  {
     }
 
     @Override
+    protected String getNavigationTitle() {
+        return "freie_suche";
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("freie_suche.jsp");
         rd.include(request, response);
@@ -29,6 +34,6 @@ public class ErweiterteSucheServlet extends AbstractGastServlet  {
         js.add("../layout/BubbleTooltips.js");
         return js;
     }
-    
-    
+
+
 }

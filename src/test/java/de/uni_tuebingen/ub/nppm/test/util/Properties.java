@@ -9,7 +9,7 @@ public class Properties extends java.util.Properties {
         super.load(input);
     }
 
-    public String getPathNegFile() {
-        return this.getProperty("path.neg.xml");
+    public String getPathNppmFile() {
+        return this.getProperty("path.nppm.xml");
     }
 }

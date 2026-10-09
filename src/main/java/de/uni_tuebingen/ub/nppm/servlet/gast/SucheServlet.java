@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SucheServlet extends AbstractGastServlet {
 
     @Override
+    protected String getNavigationTitle() {
+        return "einfaches_ergebnis";
+    }
+
+    @Override
     protected String getTitle() {
         return "einfaches_ergebnis";
     }

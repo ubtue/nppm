@@ -22,17 +22,24 @@ public class AuthHelper {
 
     public static boolean isBenutzerLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
-        return (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue());
+        return session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue();
     }
 
-    public static boolean isGastLogin(HttpServletRequest request) throws ServletException, IOException{
+    public static boolean isGastLogin(HttpServletRequest request) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        return (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Gast")));
+
+        if (session == null || session.getAttribute("BenutzerID") == null
+                || ((Integer) session.getAttribute("BenutzerID")).intValue() <= 0) {
+            return true;
+        }
+
+        Boolean isGast = (Boolean) session.getAttribute("Gast");
+        return isGast != null && isGast;
     }
 
     public static boolean isAdminLogin(HttpServletRequest request) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        return (session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Administrator")).booleanValue());
+        return session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Administrator")).booleanValue();
     }
 
 
@@ -40,7 +47,7 @@ public class AuthHelper {
         HttpSession session = request.getSession(true);
         Object BenutzerID_obj = session.getAttribute("BenutzerID");
         if (BenutzerID_obj != null) {
-            Integer BenutzerID = ((Integer) session.getAttribute("BenutzerID"));
+            Integer BenutzerID = (Integer)session.getAttribute("BenutzerID");
             if (BenutzerID > 0) {
                 return BenutzerDB.getById(BenutzerID);
             }

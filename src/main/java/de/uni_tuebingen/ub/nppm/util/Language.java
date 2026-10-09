@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.util;
 
 import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
+import java.io.PrintWriter;
 import javax.servlet.jsp.JspWriter;
 public class Language {
 
@@ -23,41 +24,40 @@ public class Language {
         if (request.getParameter("language") != null) {
             HttpSession session = request.getSession(true);
             String language = null;
-
-            try {
-                language = (String) session.getAttribute("Sprache");
-            } catch (Exception e) {
-
-            }
+            if (session.getAttribute("Sprache") != null)
+                language = (String)session.getAttribute("Sprache");
 
             // if language is set as parameter, store it in session
-            try {
-                if ((language == null && request.getParameter("language") != null)
-                        || (language != null && !language.equals(request.getParameter("language")))) {
-                    session.setAttribute("Sprache", request.getParameter("language"));
-                }
-            } catch (Exception e) {
-
+            if (language == null || (!language.equals(request.getParameter("language")))) {
+                session.setAttribute("Sprache", request.getParameter("language"));
             }
         }
     }
 
-    public static void printDatafield(JspWriter out,HttpSession session, String formular, String datenfeld) throws Exception{
+    public static String getDatafield(HttpSession session, String formular, String datenfeld) throws Exception {
+        StringBuilder html = new StringBuilder();
+
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
         boolean isSet = false;
-        out.print("<label for=\""+datenfeld+"\">");
+        html.append("<label for=\"").append(datenfeld).append("\">");
         for(String l : langArray){
             String print = DatenbankDB.getMapping(l, formular, datenfeld);
             if(print != null){
-                out.println(print);
+                html.append(print);
                 isSet = true;
                 break;
             }
         }
-        out.print("</label>");
+        html.append("</label>");
         if(!isSet)
-            out.println("no datafield available: " + formular + " " + datenfeld);
+            html.append("no datafield available: ").append(formular).append(" ").append(datenfeld);
+
+        return html.toString();
+    }
+
+    public static void printDatafield(JspWriter out, HttpSession session, String formular, String datenfeld) throws Exception{
+        out.println(getDatafield(session, formular, datenfeld));
     }
 
     public static String getTextfield(HttpSession session, String formular, String textfield) throws Exception {
@@ -74,6 +74,11 @@ public class Language {
     }
 
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
+        out.println(getTextfield(session, formular, textfield));
+    }
+
+    //In order to use this function in a Servlet, I need a PrintWriter there.
+    public static void printTextfield(PrintWriter out, HttpSession session, String formular, String textfield) throws Exception {
         out.println(getTextfield(session, formular, textfield));
     }
 

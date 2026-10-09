@@ -1,0 +1,14 @@
+<Context>
+    <!-- Mandatory -->
+    <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/nppm?characterEncoding=utf8" type="java.lang.String"/>
+    <Environment name="sqlUser" value="nppm" type="java.lang.String"/>
+    <Environment name="sqlPassword" value="nppm" type="java.lang.String"/>
+    <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
+    <Environment name="smtpPort" value="587" type="java.lang.String"/>
+    <Environment name="smtpUser" value="" type="java.lang.String"/>
+    <Environment name="smtpPassword" value="" type="java.lang.String"/>
+
+    <!-- Optional -->
+    <Environment name="matomoURL" value="" type="java.lang.String"/>
+    <Environment name="matomoSiteId" value="" type="java.lang.String"/>
+</Context>

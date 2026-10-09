@@ -1,13 +1,10 @@
-<%@page import="de.uni_tuebingen.ub.nppm.model.SelektionProvenance"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.SelektionBezeichnung"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.Selektion"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
-<%@ page import="java.util.*" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
-<%@ include file="configuration.jsp" %>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
+<%@page import="java.math.BigInteger" isThreadSafe="false" %>
+<%@page import="java.util.*" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@include file="configuration.jsp" %>
 
 <div>
     <jsp:include page="layout/titel.administration.jsp" />
@@ -18,13 +15,13 @@
             out.println("<table>");
             out.println("<tr>");
             out.println("<th>");
-            out.println("Bezeichnung");
+            out.println(Language.getTextfield(session, "admin", "Bezeichnung"));
             out.println("</th>");
             out.println("<th>");
-            out.println("Provenance Source");
+            out.println(Language.getTextfield(session, "admin", "ProvenanceSource"));
             out.println("</th>");
             out.println("<th>");
-            out.println("Provenance ID");
+            out.println(Language.getTextfield(session, "admin", "ProvenanceID"));
             out.println("</th>");
             out.println("</tr>");
             for(Selektion sel: bezList){

@@ -12,46 +12,44 @@ import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
+import de.uni_tuebingen.ub.nppm.exception.*;
+import de.uni_tuebingen.ub.nppm.util.Language;
 
 public class LoginServlet extends HttpServlet {
 
-    protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception, LoginException {
         String login = request.getParameter("username");
         String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+
+
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
-            return;
+            throw new LoginException(Language.getTextfield(session, "login", "BenutzerExistiertNicht"));
         }
-
 
         Benutzer benutzer = BenutzerDB.getByLogin(login);
 
         if (!benutzer.isAktiv()) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
-            return;
+            throw new LoginException(Language.getTextfield(session, "login", "AktivSchalten"));
         }
 
         if (benutzer == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt");
-            return;
+            throw new LoginException(Language.getTextfield(session, "login", "NichtErlaubt"));
         }
 
         String saltString = benutzer.getSalt();
         if (saltString == null || saltString.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
-            return;
+            throw new LoginException(Language.getTextfield(session, "login", "PasswortNeuSetzen") + " <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">" + Language.getTextfield(session, "login", "LinkGenerieren") + "</a>");
         }
 
         byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
         String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
         if (!passwordSalted.equals(benutzer.getPassword())) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
-            return;
+            throw new LoginException(Language.getTextfield(session, "login", "PasswortUngueltig"));
         }
 
         // Falls Session vorhanden, löschen
-        HttpSession session = request.getSession();
         if (session != null) {
             session.invalidate();
         }
@@ -68,16 +66,16 @@ public class LoginServlet extends HttpServlet {
 
         // Weiterleiten
         if (benutzer.isGast()) {
-            response.sendRedirect("gast/startseite");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/gast/infos?sharedHtml=start&current=start");
         } else {
-            response.sendRedirect("einzelbeleg");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/einzelbeleg");
         }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (AuthHelper.isBenutzerLogin(request)) {
-                response.sendRedirect("einzelbeleg");
+                response.sendRedirect(Utils.getBaseUrl(request) + "/einzelbeleg");
             } else if (request.getParameter("action") != null) {
                 if (request.getParameter("action").equals("login")) {
                     processLoginAction(request, response);
@@ -92,7 +90,11 @@ public class LoginServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
                 rd.include(request, response);
             }
-        } catch (Exception e) {
+        }catch (LoginException e) {
+            request.setAttribute("javax.servlet.error.exception", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        }
+        catch (Exception e) {
             response.sendError(500, e.getMessage());
         }
     }

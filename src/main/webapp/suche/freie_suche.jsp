@@ -117,6 +117,7 @@
     conditions.add("NOT EXISTS (SELECT * from person_verwandtmit where person.ID=person_verwandtmit.PersonIDvon)");
     person = true;
   }
+
   // ### ZUM EINZELBELEG ###
  if (!request.getParameter("Belegform").trim().equals("")) {
     conditions.add("einzelbeleg.Belegform LIKE '"+request.getParameter("Belegform").trim()+"'");
@@ -226,11 +227,13 @@
   }
   if (Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
     List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("Quellengattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
-    conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
+    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+    conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;
   }
   else if (Integer.parseInt(request.getParameter("Quellengattung")) == -2) {
-    conditions.add("einzelbeleg.QuelleGattungID is null || einzelbeleg.QuelleGattungID=-1");
+    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+    conditions.add("quelle.QuelleGattungID is null || quelle.QuelleGattungID=-1");
     einzelbeleg = true;
   }
     if (!request.getParameter("QuelleZeitraum").trim().equals("")) {
@@ -306,9 +309,22 @@
     einzelbeleg = true;
   }
 
+    String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
+
+    if (provenanceEinzelbeleg != null && Integer.parseInt(provenanceEinzelbeleg) > -1) {
+        if (Integer.parseInt(provenanceEinzelbeleg) == 0) {
+            conditions.add("einzelbeleg.provenance_source = 'NeG'");
+        } else if(Integer.parseInt(provenanceEinzelbeleg) == 1) {
+            conditions.add("einzelbeleg.provenance_source = 'DMP'");
+        } else if(Integer.parseInt(provenanceEinzelbeleg) == 2) {
+            conditions.add("einzelbeleg.provenance_source = 'NPPM'");
+        }
+        einzelbeleg = true;
+    }
+
   // ######### SUCHANFRAGE ##########
 
-    String sprache = "de";
+    String sprache = Constants.DEFAULT_LANG;
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
   /*
@@ -559,8 +575,14 @@
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EditionSeite"));
-
     einzelbeleg = true;
+  }
+  if (request.getParameter("Ausgabe_Provenance_Einzelbeleg") != null && request.getParameter("Ausgabe_Provenance_Einzelbeleg").equals("on")) {
+        fields.add("einzelbeleg.provenance_source");
+        fieldNames.add("einzelbeleg.provenance_source");
+        //headlines.add("provenance_source");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "ProvenanceEinzelbeleg"));
+        einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Quelle_Datierung") != null && request.getParameter("Ausgabe_Quelle_Datierung").equals("on")) {
     fields.add("quelle.VonTag");
@@ -596,7 +618,7 @@
     fields.add("selektion_quellengattung.Bezeichnung");
     fieldNames.add("selektion_quellengattung.Bezeichnung");
     if (!tableString.contains("selektion_quellengattung")) {
-      tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+      tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
     }
     //headlines.add("Quellengattung");
            headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));
@@ -932,7 +954,7 @@
     		fields.add("selektion_quellengattung.Bezeichnung");
     		fieldNames.add("selektion_quellengattung.Bezeichnung");
     		if (!tableString.contains("selektion_quellengattung")) {
-      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
     		}
     //		headlines.add("Quellengattung");
            	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));
@@ -1208,12 +1230,10 @@
  //       sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
 
-//      out.println(sql);
+      //out.println(sql);
     // if(true)return;
     java.util.List<Map<String, String>> searchResults = null;
     searchResults = SucheDB.getSearchResult(fieldsString, tablesString, conditionsString, orderString, order, fieldAliases.toArray(String[]::new));
-
-
 
   //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
               int orderSize = 0;
@@ -1344,7 +1364,7 @@
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                    out.print("<a href=\"mghlemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemmaID"))+"\">");
+                    out.print("<a href=\"lemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemmaID"))+"\">");
                     link = true;
                   }
                  else if (orderV[z].equals("quelle.Bezeichnung")) {
@@ -1366,7 +1386,7 @@
 
 
            if(orderV[z].startsWith("einzelbeleg.ID"))
-              out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
+              out.print(format(text, "einzelbeleg.Belegform"));
            else if(orderV[z].endsWith("Jahr")){
               int ja = Integer.parseInt(oldValue[z]);
               out.print("" + (ja* zeitraum) + "-" + ((ja+1)* zeitraum -1));
@@ -1375,7 +1395,7 @@
 
                String format = orderV[z];
                if(orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) format = "PLemma";
-                    out.print(format(DBtoHTML(text), format));
+                    out.print(format(text, format));
                }
                if (link) {
                  out.print("</a>&nbsp;");
@@ -1423,7 +1443,7 @@
                   link = true;
                 }
                 else if (fieldName.contains("mgh_lemma.MGHLemma") && item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID")) != null) {
-                    out.print("<a href=\"mghlemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID"))+"\">");
+                    out.print("<a href=\"lemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID"))+"\">");
                     link = true;
                   }
                   else if (fieldName.contains("quelle.Bezeichnung") && item.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {

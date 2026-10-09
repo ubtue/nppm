@@ -20,6 +20,12 @@
     } catch (Exception e) {
     }
 
+    String excludeText = request.getParameter("excludeText");
+    String exclusion = "";
+    if (excludeText != null && !excludeText.isEmpty() && (guest+title).compareTo("gast_mgh_lemma") == 0) {
+        exclusion = " AND " + title + ".MGHLemma NOT LIKE '%" + excludeText + "%'";
+    }
+
     int newid = id;
     String label = "";
     String backgroundClass = "";
@@ -28,21 +34,35 @@
     if (request.getParameter("Command").equals("next")) {
         label = ">";
         sql = sql.replace("*", title + ".ID");
-        sql += (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC;";
+        sql += (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id;
         backgroundClass = "next";
+        if (!exclusion.isEmpty()) {
+            sql += exclusion;
+        }
+        sql += " ORDER BY ID ASC;";
     } else if (request.getParameter("Command").equals("back")) {
         label = "<";
         sql = sql.replace("*", title + ".ID");
-        sql += (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID < " + id + " ORDER BY ID DESC;";
+        sql += (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID < " + id;
         backgroundClass = "prev";
+        if (!exclusion.isEmpty()) {
+            sql += exclusion;
+        }
+        sql += " ORDER BY ID DESC;";
     } else if (request.getParameter("Command").equals("last")) {
         label = ">|";
         sql = sql.replace("*", "max(" + title + ".ID) ID");
         backgroundClass = "next_end";
+        if (!exclusion.isEmpty()) {
+            sql += (sql.contains("WHERE") ? " AND " : " WHERE ") + "1=1" + exclusion + ";";
+        }
     } else if (request.getParameter("Command").equals("first")) {
         label = "|<";
         sql = sql.replace("*", "min(" + title + ".ID) ID");
         backgroundClass = "prev_end";
+        if (!exclusion.isEmpty()) {
+            sql += (sql.contains("WHERE") ? " AND " : " WHERE ") + "1=1" + exclusion + ";";
+        }
     } else if (request.getParameter("Command").equals("new")) {
         label = "neu";
         sql = sql.replace("*", "max(" + title + ".ID) ID");
@@ -56,5 +76,5 @@
     if (newid2 != null)
         newid = newid2;
 
-    out.println("<a class='pager " + backgroundClass + "' href='?ID=" + (request.getParameter("Command").equals("new") ? "-1" : newid) + "'></a>");
+    out.println("<a class='pager " + backgroundClass + " ut-link' href='?ID=" + (request.getParameter("Command").equals("new") ? "-1" : newid) + "'></a>");
 %>

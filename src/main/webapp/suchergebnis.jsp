@@ -7,12 +7,12 @@
 
   <jsp:param name="form" value="gast_quelle" />
 </jsp:include>
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/titel.suche.jsp" />
     <div id="form">
       <%
               session.setAttribute("filter", 0);
         session.setAttribute("filterParameter", "");
-      
+
         if ( request.getParameter("form").equals("identischesLemma") ) {
           %><%@ include file="suche/identischesLemma.jsp" %><%
         }
@@ -26,3 +26,5 @@
       %>
     </div>
   </div>
+
+    

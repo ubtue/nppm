@@ -29,10 +29,9 @@
 
     int newid = 0;
 
-
     Object[] columns = AbstractBase.getRowNative(sql);
-    if (columns != null && columns.length > 0) {
-        newid = Integer.getInteger(columns[0].toString());
+    if (columns != null && columns.length > 0 && columns[0] != null) {
+        newid = Integer.parseInt(String.valueOf(columns[0]));
     }
 
     out.println("<form method=\"POST\">");

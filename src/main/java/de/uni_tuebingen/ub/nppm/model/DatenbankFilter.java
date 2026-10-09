@@ -14,8 +14,8 @@ public class DatenbankFilter {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "Bezeichnung", length = 191)
-    private String bezeichnung;
+    @Column(name = "de", length = 191)
+    private String de;
 
     @Column(name = "Formular", length = 191)
     private String formular;
@@ -40,11 +40,11 @@ public class DatenbankFilter {
     }
 
     public String getBezeichnung() {
-        return bezeichnung;
+        return de;
     }
 
     public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
+        this.de = bezeichnung;
     }
 
     public String getFormular() {

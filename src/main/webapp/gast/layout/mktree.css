@@ -25,15 +25,13 @@
     ul.mktree li ul li { padding-top: 10px; }
 
 
-    ul.mktree li:nth-child(1n){ background: #f4f4f4; }
+    
 
 	/* Resultlist-search
 	******************************
 	*/
     .resultlist { width: 1000px; margin: 20px 0; }
-    .resultlist tr:nth-child(1) { background: #ababab; }
-    .resultlist .uneven { background: #e3e3e3; }
-    .resultlist .even { background: #cccccc; }
+   
     .resultlist th { text-align: left; font-weight: 700; }
     .resultlist td { }
     .resultlist td, .resultlist th { padding: 10px 5px; }

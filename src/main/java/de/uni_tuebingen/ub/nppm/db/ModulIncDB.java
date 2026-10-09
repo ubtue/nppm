@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -62,16 +61,11 @@ public class ModulIncDB extends AbstractBase {
 
     public static List<Object[]> getListPersonenEinzelbelege(String id) throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT e.ID, e.Belegnummer, e.Belegform, e.VonTag, e.VonMonat,"
-                    + " e.VonJahr, e.VonJahrhundert, e.BisTag, e.BisMonat, e.BisJahr,"
-                    + " e.BisJahrhundert, sew.Bezeichnung AS AmtWeiheBezeichnung, ss.Bezeichnung AS StandBezeichnung, e.kontext"
-                    + " FROM (((einzelbeleg e LEFT JOIN einzelbeleg_hatamtweihe ew ON"
-                    + " ew.einzelbelegID=e.ID) LEFT JOIN selektion_amtweihe sew ON ew.AmtWeiheID=sew.ID)"
-                    + " LEFT JOIN einzelbeleg_hatstand es ON es.einzelbelegID=e.ID) LEFT JOIN "
-                    + "selektion_stand ss ON es.StandID=ss.ID, einzelbeleg_hatperson p where "
-                    + "e.id in (SELECT einzelbeleg.ID FROM einzelbeleg, quelle WHERE"
-                    + " einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1) and e.id=p.einzelbelegID"
-                    + " and  p.personID= :id ORDER BY e.vonJahr ASC, e.vonMonat ASC, e.vonTag ASC";
+            String SQL = "SELECT e.ID, e.Belegnummer, e.Belegform, e.VonTag, e.VonMonat, e.VonJahr, e.VonJahrhundert,"
+                    + " e.BisTag, e.BisMonat, e.BisJahr, e.BisJahrhundert, e.kontext FROM einzelbeleg e LEFT JOIN"
+                    + " einzelbeleg_hatperson p ON e.ID = p.einzelbelegID WHERE e.id IN (SELECT einzelbeleg.ID"
+                    + " FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID = quelle.ID AND quelle.ZuVeroeffentlichen = 1)"
+                    + " AND p.personID = :id ORDER BY e.vonJahr ASC, e.vonMonat ASC, e.vonTag ASC;";
 
             NativeQuery query = session.createNativeQuery(SQL);
             query.setParameter("id", id);

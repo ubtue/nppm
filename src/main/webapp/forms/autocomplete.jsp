@@ -2,19 +2,34 @@
 
 <%
     if (feldtyp.equals("autocomplete")) {
+        String cssClass = "autocomplete-input";
+        if ("filterTitle".equals(datenfeld)) {
+            cssClass += " filter-title";
+        }
 
-        out.println("<input type=\"text\" style=\"width: 250px\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" " + (size > 0 ? "size=\"" + size + "\" " : ""));
-        if (formular.endsWith("freie_suche")) {
-            out.print(" placeholder=\"" + platzhalter + "\" ");
+        out.print("<input type=\"text\" class=\"" + cssClass + "\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" ");
+        if (size > 0) {
+            out.print("size=\"" + size + "\" ");
+        }
+        if (valueAutomcomplete != null && !valueAutomcomplete.trim().isEmpty()) {
+            out.print("value=\"" + Utils.escapeHTML(valueAutomcomplete) + "\" ");
+        }
+        if (formular.endsWith("freie_suche") || formular.equals("statistik")) {
+            out.print("placeholder=\"" + platzhalter + "\" ");
         }
         out.println("/>");
 
         out.println("<script>");
-        out.println("$(\"#" + datenfeld + "\").autocomplete({serviceUrl: \""+ Utils.getBaseUrl(request) + "/ajax\", params: {action: \"autocomplete\", form:\"" + auswahlherkunft + "\", field:\"" + formularAttribut + "\"}});");
-        out.println("</script>");
-        if (!tooltip.equals("")) {
-            out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
+        String autocompleteParams = "{action: \"autocomplete\", form:\"" + auswahlherkunft + "\", field:\"" + formularAttribut + "\"";
+        if (!Utils.isGastEnvironment(request)) {
+            autocompleteParams += ", backend: \"true\"";
         }
+        autocompleteParams += "}";
+        out.println("$(\"#" + datenfeld + "\").devbridgeAutocomplete({serviceUrl: \""+ Utils.getBaseUrl(request) + "/ajax\", params: " + autocompleteParams + "});");
+        out.println("</script>");
 
+        if (!tooltip.equals("")) {
+            out.println("<a href=\"javascript:return false;\" class=\"tooltip-link\" title=\"" + tooltip + "\"> ? </a>");
+        }
     }
 %>

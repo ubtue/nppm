@@ -1,0 +1,6 @@
+CLI_DIR=/var/lib/tomcat10/webapps/neg/WEB-INF
+DATA_DIR=/usr/local/var/lib/nppm
+LOG_DIR=/usr/local/var/log/nppm
+0 21 * * * cd "$CLI_DIR" && java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.SyncWikidata > "$LOG_DIR/sync_wikidata.log" 2>&1
+0 22 * * * cd "$CLI_DIR" && java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.Sitemap --pretty "$DATA_DIR/sitemaps" > "$LOG_DIR/sitemap.log" 2>&1
+0 23 * * * cd "$CLI_DIR" && java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.Beacon "$CLI_DIR/../beacon.template" "$DATA_DIR/beacon/beacon.txt" > "$LOG_DIR/beacon.log" 2>&1

@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
@@ -14,7 +15,7 @@
 
         List<Map> rowlist = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " WHERE ID=" + selected + " ORDER BY Bezeichnung ASC");
         for (Map row : rowlist) {
-            out.println(DBtoHTML(row.get("Bezeichnung").toString()));
+            out.println(Utils.safeToString(row.get("Bezeichnung")));
         }
 
         out.println("</select>");

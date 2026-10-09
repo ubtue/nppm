@@ -15,7 +15,7 @@ public class MghLemmaDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        MghLemmaDB.setInitialContext(super.getTestContext());
+        LemmaDB.setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -29,13 +29,13 @@ public class MghLemmaDBTest extends DBTest {
         }
 
         try {
-            MghLemmaDB.getListKorrektor();
+            LemmaDB.getListKorrektor();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
         try {
-            MghLemmaDB.getListBearbeiter();
+            LemmaDB.getListBearbeiter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

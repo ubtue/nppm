@@ -9,7 +9,7 @@
                     + (cols > 0 ? "cols=\"" + cols + "\" " : "")
                     + (rows > 0 ? "rows=\"" + rows + "\" " : "")
                     + ">");
-        } else {
+        } else if (value_zielAttribut != null && !value_zielAttribut.isEmpty()) {
             out.print("<div>");
         }
         if (value_zielAttribut != null) {
@@ -17,7 +17,7 @@
         }
         if (!isReadOnly) {
             out.println("</textarea>");
-        } else {
+        } else if (value_zielAttribut != null && !value_zielAttribut.isEmpty()) {
             out.println("</div>");
         }
     }

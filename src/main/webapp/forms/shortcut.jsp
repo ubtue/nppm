@@ -41,7 +41,6 @@
     int newid = id;
     String label = "";
 
-
     String sql = DatenbankDB.getFilterSql(guest + title, filter);
     sql = sql.replace("*", bez + ", " + title + ".ID");
     if (filterParameter != null) {
@@ -52,39 +51,43 @@
     String sql2 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID = " + id + " ORDER BY ID DESC";
     String sql3 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC LIMIT 0,5";
 
-   List<Map> rowlist = AbstractBase.getMappedList(sql1);
     int count = 0;
-    String res = "";
-    for (Map row : rowlist) {
-        count++;
-        if (count >= 5) {
-            break;
-        }
+    List<Map> rowlist = AbstractBase.getMappedList(sql1);
 
-        Object valueObj = row.get(bez);
-        if (valueObj != null && !valueObj.toString().equals("")) {
-            String value = format(valueObj.toString(), bez);
-            if (value != null) {
-                int max = Math.min(7, value.length());
-                if (bez.equals("PLemma")) {
-                    int posAmph = value.substring(0, max).lastIndexOf("&");
-                    int posSem = value.substring(0, max).lastIndexOf(";");
-                    if (posAmph > posSem) {
-                        posSem = value.indexOf(";", posAmph);
-                        max = value.indexOf(";", posAmph) + 1;
+    if (rowlist != null && !rowlist.isEmpty()) {
+
+        String res = "";
+        for (Map row : rowlist) {
+            count++;
+            if (count >= 5) {
+                break;
+            }
+
+            String value = Utils.safeToString(row.get(bez));
+            if (!value.equals("")) {
+                value = format(value, bez);
+                if (value != null) {
+                    int max = Math.min(7, value.length());
+                    if (bez.equals("PLemma")) {
+                        int posAmph = value.substring(0, max).lastIndexOf("&");
+                        int posSem = value.substring(0, max).lastIndexOf(";");
+                        if (posAmph > posSem) {
+                            posSem = value.indexOf(";", posAmph);
+                            max = value.indexOf(";", posAmph) + 1;
+                        }
                     }
+                    value = value.substring(0, max);
+                    value = "<a style='color:#ffffff;' href='?ID=" + String.valueOf(row.get("ID")) + "'>" + value + "..." + "</a>";
+                    res = value + "\t" + res;
                 }
-                value = value.substring(0, max);
-                value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
-                res = value + "\t" + res;
             }
         }
+        out.println(res);
     }
-    out.println(res);
 
     Map row = AbstractBase.getMappedRow(sql2);
-    if (row != null) {
-        String value = format(row.get(bez).toString(), bez);
+    if (row != null && !row.isEmpty()) {
+        String value = format(String.valueOf(row.get(bez)), bez);
         if (value != null) {
             int max = Math.min(10, value.length());
             if (bez.equals("PLemma")) {
@@ -102,27 +105,29 @@
 
     List<Map> rowlist3 = AbstractBase.getMappedList(sql3);
     count = 0;
-    for (Map row3 : rowlist3) {
-        count++;
-        if (count >= 5)
-            break;
-
-        String value = format(row3.get(bez).toString(), bez);
-        if (value != null) {
-            int max = Math.min(7, value.length());
-            if (bez.equals("PLemma")) {
-                int posAmph = value.substring(0, max).lastIndexOf("&");
-                int posSem = value.substring(0, max).lastIndexOf(";");
-                if (posAmph > posSem) {
-                    posSem = value.indexOf(";", posAmph);
-                    max = value.indexOf(";", posAmph) + 1;
-                }
+    if (rowlist3 != null && !rowlist3.isEmpty()) {
+        for (Map row3 : rowlist3) {
+            count++;
+            if (count >= 5) {
+                break;
             }
-            value = value.substring(0, max);
-            value = "<a style='color:#ffffff;' href='?ID=" + row3.get("ID").toString() + "'>" + value + "..." + "</a>";
-            out.println(value + "\t");
+
+            String value = format(String.valueOf(row3.get(bez)), bez);
+            if (value != null) {
+                int max = Math.min(7, value.length());
+                if (bez.equals("PLemma")) {
+                    int posAmph = value.substring(0, max).lastIndexOf("&");
+                    int posSem = value.substring(0, max).lastIndexOf(";");
+                    if (posAmph > posSem) {
+                        posSem = value.indexOf(";", posAmph);
+                        max = value.indexOf(";", posAmph) + 1;
+                    }
+                }
+                value = value.substring(0, max);
+                value = "<a style='color:#ffffff;' href='?ID=" + String.valueOf(row3.get("ID")) + "'>" + value + "..." + "</a>";
+                out.println(value + "\t");
+            }
         }
     }
-
 //  out.println("<a style='color:#ffffff;' href='?ID="+(request.getParameter("Command").equals("new")?"-1":newid)+"'>"+label+"</a>");
 %>

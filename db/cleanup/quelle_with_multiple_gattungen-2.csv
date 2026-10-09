@@ -1,0 +1,108 @@
+quelle_with_multiple_gattungen-2;;;;;
+QuelleID;quelle_bezeichnung;anzahl_gattungen;gattungen_ids;gattungen_bezeichnungen;gattungen_NEU
+5;Paulus Diaconus, Historia Langobardorum;2;-1,8;-,historiographisch;historiographisch
+20;Ammianus Marcellinus, Res gestae;2;-1,8;-,historiographisch;historiographisch
+32;Eugippius, Vita Severini;2;4,8;biographisch,historiographisch;hagiographisch
+40;Annales Sancti Amandi;2;-1,2;-,Annalen;Annalen
+41;Annales Tiliani;2;-1,2;-,Annalen;Annalen
+44;Annales Guelferbytani;2;-1,2;-,Annalen;Annalen
+47;Walahfrid Strabo, Vita Otmari;2;-1,4;-,biographisch;hagiographisch
+66;Annales Monasterienses;2;-1,2;-,Annalen;Annalen
+74;0775 Karl d.Gr. für Murbach;2;-1,1;-,Urkunde;Urkunde
+84;Gallus Öhem, Cronick;2;-1,8;-,historiographisch;historiographisch
+85;Series abbatum Saint-Avold;2;-1,8;-,historiographisch;historiographisch
+98;0745 Chrodegang für Gorze (G);2;-1,1;-,Urkunde;Urkunde
+99;0754 Chrodegang für Gorze (G);2;-1,1;-,Urkunde;Urkunde
+100;0759 Radulfus und Agla für Gorze (G);2;-1,1;-,Urkunde;Urkunde
+157;Papierkorb;7;-1,2,4,8,10,14,16;-,Annalen,biographisch,historiographisch,Urkunde,Verwaltungsschrifttum,hagiographisch;Annalen
+323;0744 Moatbert für Freising;2;-1,1;-,Urkunde;Urkunde
+709;0774 Karl der Große für St. Pilt$;2;-1,1;-,Urkunde;Urkunde
+1137;0754 Eggioltus für Fulda#;2;-1,1;-,Urkunde;Urkunde
+1565;0780-0802(c.) Uodiltag und Wentelsvint für Fulda#;2;-1,1;-,Urkunde;Urkunde
+1600;Gregor von Tours, Libri Historiarum X;2;8,16;historiographisch,hagiographisch;historiographisch
+1601;Additamentum Nivialense de Fuilano;2;8,16;historiographisch,hagiographisch;hagiographisch
+1603;Adso Dervensis, Vita Frodoberti;2;8,16;historiographisch,hagiographisch;hagiographisch
+1604;Aigradus, Vita Ansberti;2;8,16;historiographisch,hagiographisch;hagiographisch
+1606;Alkuin, Vita Vedastis;2;8,16;historiographisch,hagiographisch;hagiographisch
+1611;Ardo, Vita Benedicti;2;8,16;historiographisch,hagiographisch;hagiographisch
+1616;Gregor von Tours, Liber in gloria confessorum;2;8,16;historiographisch,hagiographisch;hagiographisch
+1617;Gregor von Tours, Liber in gloria martyrum;2;8,16;historiographisch,hagiographisch;hagiographisch
+1618;Gregor von Tours, Virtutes Iuliani;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1619;Gregor von Tours, Virtutes Martini;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1620;Gregor von Tours, Liber vitae patrum;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1621;Jonas von Bobbio, Vita Columbani;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1622;Jonas von Bobbio, Vita Iohannis;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1623;Liudger, Vita Gregorii;2;8,16;historiographisch,hagiographisch;hagiographisch
+1627;Passio Desiderii et Reginfridi;2;8,16;historiographisch,hagiographisch;hagiographisch
+1629;Passio Leudegarii I;2;8,16;historiographisch,hagiographisch;hagiographisch
+1630;Passio Praeiecti episcopi;2;8,16;historiographisch,hagiographisch;hagiographisch
+1637;Ursinus von Ligugé, Passio Leudegarii II;2;8,16;historiographisch,hagiographisch;hagiographisch
+1645;Vita Alcuini;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1649;Vita Anstrudis;2;8,16;historiographisch,hagiographisch;hagiographisch
+1654;Vita Audomari;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1657;Vita Balthildis;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1662;Vita Boniti;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1665;Vita Carileffi;2;8,16;historiographisch,hagiographisch;hagiographisch
+1671;Gislemar, Vita Droctovei;2;8,16;historiographisch,hagiographisch;hagiographisch
+1672;Audoenus von Rouen, Vita Eligii episcopi Noviomagensis;2;-1,16;-,hagiographisch;hagiographisch
+1676;Vita Eucherii;2;-1,8;-,historiographisch;hagiographisch
+1677;Vita Faronis;2;8,16;historiographisch,hagiographisch;hagiographisch
+1679;Vita Filiberti;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1681;Vita Gaugerici prima;2;8,16;historiographisch,hagiographisch;hagiographisch
+1685;Vita Hrodberti;2;8,16;historiographisch,hagiographisch;hagiographisch
+1688;Vita Landelini;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1692;Rudolf von Fulda, Vita Leobae;2;-1,8;-,historiographisch;hagiographisch
+1693;Vita et miracula Leutfredi;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1695;Vita Melanii;2;8,16;historiographisch,hagiographisch;hagiographisch
+1699;Vita Pardulfi;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1700;Vita Pirminii;3;-1,4,8;-,biographisch,historiographisch;hagiographisch
+1701;Vita Radegundis;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1703;Vita et translatio Rigoberti;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1710;Jonas von Bobbio, Vita Vedastis;2;8,16;historiographisch,hagiographisch;hagiographisch
+1719;Willibald, Vita Bonifatii;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1734;Vita Gangulfi;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+1742;Vita Richarii primigenia;2;8,16;historiographisch,hagiographisch;hagiographisch
+1745;Vita Chlodovaldi;2;8,16;historiographisch,hagiographisch;hagiographisch
+1746;Vita Odiliae;2;8,16;historiographisch,hagiographisch;hagiographisch
+1747;Vita Genovefae;2;8,16;historiographisch,hagiographisch;hagiographisch
+1748;Florentius, Vita Rusticulae sive Marciae abbatissae Arelatensis;2;8,16;historiographisch,hagiographisch;hagiographisch
+2039;Documents comptables de Saint-Martin de Tours;3;-1,10,14;-,Urkunde,Verwaltungsschrifttum;Verwaltungsschrifttum
+2064;0762-0764 Erchanpald für Freising;2;-1,1;-,Urkunde;Urkunde
+2073;0785-797 Tagadeo für Passau (TP);2;-1,1;-,Urkunde;Urkunde
+2100;Lupus von Ferrières, Vita Wigberti;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+2109;Paulus Judaeus, Vita Erhardi;2;-1,8;-,historiographisch;hagiographisch
+2115;Virtutes Geretrudis;2;8,16;historiographisch,hagiographisch;hagiographisch
+2127;Vita Aridii;2;8,16;historiographisch,hagiographisch;hagiographisch
+2131;Vita Austrigisili episcopi Biturigi;2;8,16;historiographisch,hagiographisch;hagiographisch
+2142;Vita Chrothildis;2;8,16;historiographisch,hagiographisch;hagiographisch
+2144;Vita Dalmatii;2;8,16;historiographisch,hagiographisch;hagiographisch
+2162;Vita Hugberti;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+2174;Vita Nicetii;2;8,16;historiographisch,hagiographisch;hagiographisch
+2233;Fredegar, Chronica;3;-1,8,16;-,historiographisch,hagiographisch;historiographisch
+2234;Vita Severini;3;-1,8,16;-,historiographisch,hagiographisch;hagiographisch
+2236;leer;4;-1,4,8,16;-,biographisch,historiographisch,hagiographisch;Annalen
+94311;0739 Testament des Abbo;2;2,1;Annalen,Urkunde;Urkunde
+94316;Epistulae Desiderii Episcopi Cadurcensis, Nr. I 02, an Grimoald I. d. Ä.;2;-1,5;-,Brief;Brief
+94365;Julian von Toledo, Historia Wambae regis;3;5,8,16;Brief,historiographisch,hagiographisch;historiographisch
+94372;Alfons und seine Frau Hermesinda;2;-1,1;-,Urkunde;Urkunde
+94377;0747 Odoarius für die Kirche von Lugo;2;10,13;Urkunde,Testament;Urkunde
+94379;0757 Auzano, Guntino und Desterigo gründen eine Kirche;2;10,13;Urkunde,Testament;Urkunde
+94380;0760 Odoario für die Kirche von Lugo;2;10,13;Urkunde,Testament;Urkunde
+94382;0780 Adelgaster gruendet das Kloster Santa Maria von Obona;3;-1,10,13;-,Urkunde,Testament;Urkunde
+94385;0787 Die Moenche Froila, Pascasio und Leodulfo segnen Basilica von Sankt Julian;2;-1,1;-,Urkunde;Urkunde
+94386;0790 Alvaro für das Klosters von Aguas Calidas;2;-1,1;-,Urkunde;Urkunde
+94391;803 Fakilo schenkt seine Besitztuemer dem Kloster Santa Maria von Libardon;2;-1,1;-,Urkunde;Urkunde
+94402;818 Graf Alvito Schenkung Kloster San Vicente de Vilouchada;2;-1,1;-,Urkunde;Urkunde
+94418;842 Benedikt, Gundalfus und andere für Alfons und Adosinda;2;10,13;Urkunde,Testament;Urkunde
+94420;844 Fredulphus für Sta Maria de Valpuesta;3;-1,10,13;-,Urkunde,Testament;Urkunde
+94421;844 Ramiro I. für Santiago;2;10,13;Urkunde,Testament;Urkunde
+94426;817 Bei der Gerichtsverhandlung tagen die Zeugen vor dem Altar von Sant Andreu de Borrassa;2;-1,1;-,Urkunde;Urkunde
+94430;841 Domenec bestätigt den Besitz zu Teradelles;2;-1,13;-,Testament;Urkunde
+94432;822 Gründung des Klosters von Tobiellas;2;8,1;historiographisch,Urkunde;Urkunde
+94520;Annales Petaviani;2;0,2;?,Annalen;Annalen
+94527;Einhard, Translatio et miracula sanctorum Marcellini et Petri;2;8,16;historiographisch,hagiographisch;hagiographisch
+94578;0782 Hildeprand für Montecassino;2;-1,1;-,Urkunde;Urkunde
+94747;Die Briefe des Heiligen Bonifatius Nr. 84, Theophylakt an Bonifatius;2;-1,5;-,Brief;Brief
+94753;0624(c.) Adaloald für Bobbio;2;5,1;Brief,Urkunde;Urkunde
+94754;0625-0626 Adaloald für Bobbio;2;5,1;Brief,Urkunde;Urkunde
+94783;0739 Liutprand für Farfa;2;-1,1;-,Urkunde;Urkunde

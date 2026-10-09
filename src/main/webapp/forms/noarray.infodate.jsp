@@ -5,7 +5,7 @@
     if (feldtyp.equals("infodate") && !array) {
         Timestamp timestamp = AbstractBase.getTimestampNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
         if (timestamp != null) {
-            out.print(DBtoHTML(timestamp.toString()));
+            out.print(DBtoHTML(String.valueOf(timestamp)));
         }
     }
 %>

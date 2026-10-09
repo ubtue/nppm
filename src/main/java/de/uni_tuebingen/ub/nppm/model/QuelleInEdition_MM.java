@@ -1,7 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "quelle_inedition")
@@ -10,15 +9,15 @@ public class QuelleInEdition_MM {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
+
     @ManyToOne(targetEntity = Quelle.class)
     @JoinColumn(name = "QuelleID", referencedColumnName="ID")
     private Quelle quelle;
-    
+
     @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
     private Edition edition;
-    
+
     @Column(name = "Standard")
     private Integer standard;
 
@@ -71,6 +70,6 @@ public class QuelleInEdition_MM {
     public void setNummer(String nummer) {
         this.nummer = nummer;
     }
-    
-    
+
+
 }

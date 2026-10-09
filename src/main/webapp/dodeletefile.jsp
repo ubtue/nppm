@@ -17,22 +17,22 @@
 
 <HTML>
   <HEAD>
-    <TITLE>Nomen et Gens - L&ouml;schen</TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
+    <TITLE>Nomen et Gens - <% Language.printTextfield(out, session, "fileManagement", "Delete");%></TITLE>
+    <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
+    <script src="<%=Utils.getVersionedHref(request, application, "/javascript/funktionen.js")%>" type="text/javascript"></script>
     <noscript></noscript>
   </HEAD>
 
   <BODY>
     <jsp:include page="layout/navigation.inc.jsp" />
     <jsp:include page="layout/image.inc.html" />
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/titel.suche.jsp" />
     <div id="form">
-      <h2>L&ouml;schen</h2>
+      <h2><% Language.printTextfield(out, session, "fileManagement", "Delete");%></h2>
 <%
 
     if (request.getParameter("table") == null || request.getParameter("attribute") == null || (request.getParameter("ID") == null || request.getParameter("returnpage") == null)) {
-    out.println("Falscher Aufruf!");
+        out.println(Language.getTextfield(session, "dodeletefile", "FalscherAufruf"));
     }
     else
     {
@@ -47,9 +47,9 @@
 
         AbstractBase.update(request.getParameter("table"),request.getParameter("attribute"), null, condMap);
 
-        out.println("<p>Eintrag "+filename+" erfolgreich gel&ouml;scht!</p>");
+        out.println("<p>" + Language.getTextfield(session, "titel_inc", "Eintrag") + " " +filename+ " " + Language.getTextfield(session, "dodeletefile", "ErfolgreichGeloescht") + "</p>");
     }
-        out.println("<p><a href=\""+request.getParameter("returnpage")+"?ID="+request.getParameter("ID")+"\">zur&uuml;ck</a></p>");
+        out.println("<p><a href=\""+request.getParameter("returnpage")+"?ID="+request.getParameter("ID")+"\">" + Language.getTextfield(session, "einstellungen", "Zurueck") + "</a></p>");
 %>
     </div>
   </BODY>
@@ -57,7 +57,9 @@
 <%
   }
   else {
-    out.println("<p>Zugriff nicht erlaubt!!!</p>");
-    out.println("<a href=\"index.jsp\">Zur&uuml;ck zur Startseite</a>");
+%>
+    <p><% Language.printTextfield(out, session, "dodeletefile", "ZugriffNichtErlaubt");%></p>
+    <a href="<%=Utils.getBaseUrl(request)%>/index.jsp"><% Language.printTextfield(out, session, "all", "Startseite");%></a>
+<%
   }
 %>

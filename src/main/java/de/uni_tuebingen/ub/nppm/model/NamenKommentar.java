@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
-public class NamenKommentar {
+public class NamenKommentar implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,6 +71,11 @@ public class NamenKommentar {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "N" + getId();
     }
 
     public String geteLemma() {
@@ -126,34 +134,42 @@ public class NamenKommentar {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }
@@ -185,4 +201,24 @@ public class NamenKommentar {
     public void removeEinzelbeleg(int id) {
         this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "ELemma", Utils.sanitize(this.geteLemma()));
+        Utils.addIfValid(jsonObject, "PLemma", Utils.sanitize(this.getpLemma()));
+        Utils.addIfValid(jsonObject, "MGHLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus",
+                Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe",
+                Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "hinweise", Utils.sanitize(this.getHinweise()));
+        Utils.addIfValid(jsonObject, "protokoll", Utils.sanitize(this.getProtokoll()));
+        Utils.addIfValid(jsonObject, "dateiname", Utils.sanitize(this.getDateiname()));
+        Utils.addIfValid(jsonObject, "id", "N" + this.getId());
+
+        return jsonObject;
+    }
+
 }
