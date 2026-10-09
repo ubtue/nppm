@@ -5,14 +5,14 @@ import java.util.Date;
 
 public interface History {
     Date getErstellt();
-    void setErstellt(Date erstellt);
+    void setErstellt(final Date erstellt);
 
     Benutzer getErstelltVon();
-    void setErstelltVon(Benutzer erstelltVon);
+    void setErstelltVon(final Benutzer erstelltVon);
 
     Date getLetzteAenderung();
-    void setLetzteAenderung(Date letzteAenderung);
+    void setLetzteAenderung(final Date letzteAenderung);
 
     Benutzer getLetzteAenderungVon();
-    void setLetzteAenderungVon(Benutzer letzteAenderungVon);
+    void setLetzteAenderungVon(final Benutzer letzteAenderungVon);
 }
