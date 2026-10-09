@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<schema name="nppm" version="1.4">
+  <uniqueKey>id</uniqueKey>
+
+  <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/field-type-definitions-and-properties.html -->
+  <types>
+    <fieldType name="string" class="solr.StrField" />
+
+    <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/date-formatting-math.html#date-range-formatting -->
+    <fieldType name="dateRange" class="solr.DateRangeField" />
+
+    <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/document-analysis.html -->
+    <fieldType name="text" class="solr.TextField">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+  </types>
+
+  <fields>
+    <!-- Required / Mandatory -->
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+    <field name="belegform" type="string" indexed="true" stored="true" required="true" />
+    <field name="quelle" type="string" indexed="true" stored="true" required="true" />
+
+    <!-- Optional -->
+    <field name="datierung" type="dateRange" indexed="true" stored="true" />
+    <field name="kontext" type="text" indexed="true" stored="true" />
+    <field name="lemma" type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="person" type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="raster" type="string" indexed="true" stored="true" />
+    <field name="seite" type="string" indexed="true" stored="true" />
+    <field name="stand" type="string" indexed="true" stored="true" multiValued="true" />
+
+    <!--
+        "amtweihe" is an example for an Hierarchical Facet, see also:
+        https://cwiki.apache.org/confluence/display/solr/HierarchicalFaceting
+    -->
+    <field name="amtweihe" type="string" indexed="true" stored="true" multiValued="true" />
+  </fields>
+</schema>

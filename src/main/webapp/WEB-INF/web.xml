@@ -314,6 +314,14 @@
         <url-pattern>/gast/content</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>SolrServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SolrServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SolrServlet</servlet-name>
+        <url-pattern>/gast/solr</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.TestServlet</servlet-class>
     </servlet>

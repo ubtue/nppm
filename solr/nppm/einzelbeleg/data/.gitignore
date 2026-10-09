@@ -1,0 +1,3 @@
+# this directory will contain index-related binary files after the first import has been executed
+*
+!.gitignore

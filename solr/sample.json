@@ -1,0 +1,44 @@
+[
+    {
+        "id": "1319",
+        "belegform": "Uuidegernus",
+        "quelle": "0728 Widegern für Murbach",
+        "datierung": "728-05-13",
+        "kontext": "... Uuidegernus gratia d(e)i ecclesie s(an)c(t)e Marie Stratburgo ciuitate uocatus ep(iscopu)s.",
+        "person": [
+            "Widegern <Bf. v. Straßburg; 8Jh1>"
+        ]
+    },
+    {
+        "id": "1320",
+        "belegform": "Ebrochardus",
+        "quelle": "0728 Widegern für Murbach",
+        "datierung": "728-05-13",
+        "kontext": "Unde nos comp(er)ti, uir inl(us)t(er) Ebrochardus quomis in heremo, q(ui) vocat(ur) Uosecus ... monasterio in suo p(ro)prio a nouo edificare conatus e(st).",
+        "person": [
+            "Eberhard <Gf. im Elsass, Stifter des Klosters Murbach, + 747>"
+        ]
+    },
+    {
+        "id": "496146",
+        "belegform": "benedicte",
+        "quelle": "Urkunden von Cluny 2",
+        "datierung": "[* TO 971-11-11]"
+    },
+    {
+        "id": "772",
+        "belegform": "uto",
+        "quelle": "Ettenheimmünster (RVB): Uto I. episcopus-Liste",
+        "datierung": "[787 TO 815]",
+        "amtweihe": [
+            "0/Geistliche/",
+            "1/Geistliche/episcopus/"
+        ],
+        "stand": [
+            "colonus"
+        ],
+        "person": [
+            "Uto <Bf. v. Straßburg; 8Jh2-9Jh1>"
+        ]
+    }
+]

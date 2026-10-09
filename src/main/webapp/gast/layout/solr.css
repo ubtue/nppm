@@ -1,0 +1,93 @@
+/* layout-related */
+.main {
+    width: 100%;
+}
+
+.mainbody {
+    width: 70%;
+}
+
+.sidebar {
+    display: block;
+    margin-left: 20px;
+}
+
+/* result-related */
+
+.result {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.results-total {
+    margin-top: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.heading {
+
+}
+
+.lemma {
+
+}
+
+.quellenangabe {
+    margin-top: 10px;
+}
+
+.quelle {
+    font-weight: bold;
+}
+
+.kontext {
+    font-style: italic;
+}
+
+.id {
+    font-weight: bold;
+}
+
+/* facet-related */
+.facet-group {
+    margin-bottom: 20px;
+}
+
+.facet-title {
+    display: block;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    padding: .5rem;
+}
+
+.facet-list-item {
+    border: 1px solid #ddd;
+    padding: .5rem;
+}
+
+.facet-link {
+    display: flex;
+    justify-content: space-between;
+}
+
+.facet-list-item-active {
+    border: 1px solid #ddd;
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    color: #c6c6c6;
+    background-color: #434343;
+}
+
+.facet-value {
+    align-content: center;
+}
+
+.facet-count {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 3px 7px;
+    align-content: center;
+}

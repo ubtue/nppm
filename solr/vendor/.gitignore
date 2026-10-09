@@ -1,0 +1,3 @@
+# this directory should contain the solr binaries which can be manually downloaded from https://solr.apache.org/downloads.html
+*
+!.gitignore
