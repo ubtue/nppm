@@ -3,7 +3,7 @@
 This directory + the Solr functionality is experimental & could serve as a simple proof-of concept for the funding period 2025+.
 
 Installation:
-- Download the latest Solr Binary release (tested with 9.7.0) from https://solr.apache.org/downloads.html + extract it to the "vendor" directory
+- Download the latest Solr Binary release (tested with 9.11.0) from https://solr.apache.org/downloads.html + extract it to the "vendor" directory
 - Execute `solr.sh --force start` (NOT in the vendor directory => use the script in the same directory as this README file)
   - (--force is only needed if you try to run as root user)
 - Check http://localhost:8984/solr/#/einzelbeleg/query to make sure that the Solr instance is running.

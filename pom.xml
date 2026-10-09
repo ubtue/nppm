@@ -30,10 +30,11 @@
             <!-- The next MySQL version after 9 is actually 26, which is no longer backwards compatible with 8.0 server (default in ubuntu 24.04) so we cannot use it yet. -->
             <version>9.7.0</version>
         </dependency>
+        <!-- This is just the solrj client. If you want to update the server, please have a look at the README.md -->
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>9.7.0</version>
+            <version>9.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

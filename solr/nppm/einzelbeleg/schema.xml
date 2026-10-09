@@ -2,14 +2,14 @@
 <schema name="nppm" version="1.4">
   <uniqueKey>id</uniqueKey>
 
-  <!-- https://solr.apache.org/guide/solr/9_0/indexing-guide/field-type-definitions-and-properties.html -->
+  <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/field-type-definitions-and-properties.html -->
   <types>
     <fieldType name="string" class="solr.StrField" />
 
-    <!-- https://solr.apache.org/guide/solr/latest/indexing-guide/date-formatting-math.html#date-range-formatting -->
+    <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/date-formatting-math.html#date-range-formatting -->
     <fieldType name="dateRange" class="solr.DateRangeField" />
 
-    <!-- https://solr.apache.org/guide/solr/latest/indexing-guide/document-analysis.html -->
+    <!-- https://solr.apache.org/guide/solr/9_11/indexing-guide/document-analysis.html -->
     <fieldType name="text" class="solr.TextField">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
